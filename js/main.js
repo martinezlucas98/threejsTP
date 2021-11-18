@@ -8,8 +8,7 @@ import { Lightpole } from "./lightpole.js";
 import { Ground } from "./ground.js";
 import { StartLine } from './startLine.js';
 
-
-
+import {FlyControls} from "https://cdn.skypack.dev/three@0.134.0/examples/jsm/controls/FlyControls.js"
 const scene = new THREE.Scene();
 buildScene();
 
@@ -29,7 +28,7 @@ scene.add(directLight.target);
 
 // Camera
 const aspectRatio = window.innerWidth/window.innerHeight;
-const camera = new THREE.PerspectiveCamera(45,aspectRatio,0.1,1000);
+const camera = new THREE.PerspectiveCamera(45,aspectRatio,0.10,1000);
 
 /*
 const cameraWidth = 150;
@@ -47,10 +46,23 @@ camera.position.set(0,5,0);
 // Renderer
 const renderer = new THREE.WebGLRenderer({antialias:true});
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setClearColor("skyblue");//("#2a2a35");
+renderer.setClearColor("skyblue");//("#2a2a35");s
+var controls = new FlyControls(camera )
+controls.autoForward = false;
+controls.dragToLook = true;
 
+function animate() {
 
-keyController();
+	requestAnimationFrame( animate );
+    
+
+	// required if controls.enableDamping or controls.autoRotate are set to true
+	controls.update(1);
+
+	renderer.render( scene, camera );
+
+}
+animate()
 THREE.DefaultLoadingManager.onProgress = function ( item, loaded, total ) {
 
     // console.log( item, loaded, total ); // debug
@@ -74,30 +86,24 @@ function keyController(){
             case "w":
             case "W":
                 camera.position.z -= step;
-                renderer.render(scene,camera);
                 break;
             case "a":
             case "A":
                 camera.position.x -= step;
-                renderer.render(scene,camera);
                 break;
             case "s":
             case "S":
                 camera.position.z += step;
-                renderer.render(scene,camera);
                 break;
             case "d":
             case "D":
                 camera.position.x += step;
-                renderer.render(scene,camera);
                 break;
             case " ":
                 camera.position.y += step;
-                renderer.render(scene,camera);
                 break;
             case " ":
                 camera.position.y += step;
-                renderer.render(scene,camera);
                 break;
             case "o":
             case "O":
@@ -105,7 +111,6 @@ function keyController(){
                 camera.position.x = scene.position.x + distCenter * Math.cos( rotSpeed * angle );         
                 camera.position.z = scene.position.z + distCenter * Math.sin( rotSpeed * angle );
                 camera.lookAt(scene.position);
-                renderer.render(scene,camera);
                 break;
             case "p":
             case "P":
@@ -113,12 +118,10 @@ function keyController(){
                 camera.position.x = scene.position.x + distCenter * Math.cos( rotSpeed * angle );         
                 camera.position.z = scene.position.z + distCenter * Math.sin( rotSpeed * angle );
                 camera.lookAt(scene.position);
-                renderer.render(scene,camera);
                 break;
             default:
                 if (event.shiftKey){
                     camera.position.y -= step;
-                    renderer.render(scene,camera);
                     break;
                 }
         }
