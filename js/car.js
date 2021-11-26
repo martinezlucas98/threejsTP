@@ -1,9 +1,11 @@
 import * as THREE from 'https://cdn.skypack.dev/three@0.134.0';
-import { pickRandom, hollowCilinder, prismTrapezie } from "./utils.js"
+import { pickRandom, hollowCilinder, prismTrapezie, randomInt } from "./utils.js"
 
-const vehicleColors = ["#a52523","#bdb638","#78b14b","#283747","#8E44AD"];
+const vehicleColors = ["#a52523","#bdb638","#78b14b","#283747","#8E44AD","#F97919"];
 
-export function Car(num){
+export function Car(){
+    const num = randomInt(10,99);
+
     const chasisLen = 3;
     const chasisHeight = 0.75;
     const chasisDepth = 1.5;
@@ -68,13 +70,24 @@ export function Car(num){
 
 
     const number = new THREE.Mesh(
-        new THREE.CylinderGeometry( 0.3, 0.3, chasisDepth+0.01, 32 ),
+        new THREE.CylinderGeometry( 0.3, 0.3, 0.01, 32 ),
         [new THREE.MeshPhongMaterial({map:getNumberTexture(num,carColor)}),new THREE.MeshPhongMaterial({map:getNumberTexture(num,carColor)}),new THREE.MeshPhongMaterial({map:getNumberTexture(num,carColor)})]
     );
     number.position.y=mainChasis.position.y;
+    number.position.z=chasisDepth/2;
     number.rotation.x = Math.PI/2;
     number.rotation.y = Math.PI/2;
     car.add(number)
+
+    const number2 = new THREE.Mesh(
+        new THREE.CylinderGeometry( 0.3, 0.3, 0.005, 32 ),
+        [new THREE.MeshPhongMaterial({map:getNumberTexture(num,carColor)}),new THREE.MeshPhongMaterial({map:getNumberTexture(num,carColor)}),new THREE.MeshPhongMaterial({map:getNumberTexture(num,carColor)})]
+    );
+    number2.position.y=mainChasis.position.y;
+    number2.position.z=-chasisDepth/2;
+    number2.rotation.x = Math.PI/2;
+    number2.rotation.y = -Math.PI/2;
+    car.add(number2)
 
     const cabin = new THREE.Mesh(
         prismTrapezie([-0.825,0,0],[1,0,0],[-0.4125,0.4,0],[0.4125,0.4,0], 1.2),

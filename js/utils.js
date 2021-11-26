@@ -4,6 +4,10 @@ export function pickRandom(array){
     return array[Math.floor(Math.random()*array.length)];
 }
 
+export function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
 export function hollowCilinder(r1,r2,ext){ // radius
     var extrudeSettings = {
         depth : ext,

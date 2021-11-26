@@ -1,5 +1,6 @@
 import * as THREE from 'https://cdn.skypack.dev/three@0.134.0';
 import { Person } from "./person.js";
+import { hollowCilinder } from './utils.js';
 
 export function Seats(len,seatRows,populationPercentage=100){
     const seats = new THREE.Group();
@@ -38,6 +39,68 @@ export function Seats(len,seatRows,populationPercentage=100){
     
 
     return seats;
+}
+
+export function SeatsVIP(radius,floors){
+    if (floors<1){floors=1;}
+    const building = new THREE.Group();
+    const material = new THREE.MeshLambertMaterial( {color: 0x7e7f75} );
+    const glassMaterial = new THREE.MeshPhongMaterial( {color: 0xd8e4e0} );
+    glassMaterial.transparent = true;
+    glassMaterial.opacity = 0.6;
+
+    const baseTexture = new THREE.TextureLoader().load("../textures/rolex_pirelli.png");
+    baseTexture.wrapS = THREE.RepeatWrapping;
+    baseTexture.wrapT = THREE.RepeatWrapping;
+    baseTexture.repeat.set(5,1);
+    const base = new THREE.Mesh( 
+        new THREE.CylinderGeometry( radius, radius, 4, 32 ), 
+        new THREE.MeshPhongMaterial( {map: baseTexture} )
+    );
+    base.position.y=2;
+    building.add(base)
+    
+    let currentHeight = 4;
+    for (let i=0; i<floors; i++){
+        const floor = new THREE.Mesh( 
+            new THREE.CylinderGeometry( radius, radius, 0.5, 32 ),//hollowCilinder(radius,radius,0.5), 
+            material
+        );
+        floor.position.y=0.25+currentHeight;
+        currentHeight+=4.5;
+        building.add(floor);
+    }
+
+    const glass = new THREE.Mesh(
+        hollowCilinder(radius-0.5,radius-0.5,currentHeight), 
+        glassMaterial
+    );
+    glass.rotation.x=Math.PI/2;
+    glass.position.y=currentHeight;
+    //currentHeight+=3;
+    building.add(glass);
+
+    const roof = new THREE.Mesh( 
+        new THREE.CylinderGeometry( radius, radius, 1, 32 ), 
+        material
+    );
+    roof.position.y=0.5+currentHeight;
+    currentHeight+=1;
+    building.add(roof)
+    
+    const heliTexture = new THREE.TextureLoader().load("../textures/heliport.png");
+    heliTexture.wrapS = THREE.RepeatWrapping;
+    heliTexture.wrapT = THREE.RepeatWrapping;
+    heliTexture.repeat.set(1,1);
+    const heliport = new THREE.Mesh( 
+        new THREE.CylinderGeometry( radius/2, radius/2, 0.2, 32 ), 
+        new THREE.MeshLambertMaterial( {map: heliTexture} )
+    );
+    heliport.position.y=0.5+currentHeight;
+    heliport.rotation.y=-Math.PI/1.2;
+    building.add(heliport)
+    
+    return building;
 }
 
 function populate(seatRows,len,populationPercentage){

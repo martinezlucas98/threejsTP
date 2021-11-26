@@ -86,28 +86,28 @@ export function Lightpole(){
     lantern1.position.x = -1;
     lantern1.rotation.x=Math.PI/8;
     lightpole.add(lantern1);
-    lightpole.add(light(lantern1.position));
+    //lightpole.add(light(lantern1.position));
 
     const lantern2 = lantern(lanternW,lanternH,lanternD);
     lantern2.position.y=supportPole.position.y;
     lantern2.position.x = -0.35;
     lantern2.rotation.x=lantern1.rotation.x
     lightpole.add(lantern2);
-    lightpole.add(light(lantern2.position));
+    //lightpole.add(light(lantern2.position));
 
     const lantern3 = lantern(lanternW,lanternH,lanternD);
     lantern3.position.y=supportPole.position.y;
     lantern3.position.x = 0.35;
     lantern3.rotation.x=lantern1.rotation.x
     lightpole.add(lantern3);
-    lightpole.add(light(lantern3.position));
+    //lightpole.add(light(lantern3.position));
 
     const lantern4 = lantern(lanternW,lanternH,lanternD);
     lantern4.position.y=supportPole.position.y;
     lantern4.position.x = 1;
     lantern4.rotation.x=lantern1.rotation.x
     lightpole.add(lantern4);
-    lightpole.add(light(lantern4.position));
+    //lightpole.add(light(lantern4.position));
 
 
     const lantern5 = lantern(lanternW,lanternH,lanternD);
@@ -115,28 +115,31 @@ export function Lightpole(){
     lantern5.position.x = -1;
     lantern5.rotation.x=Math.PI/8;
     lightpole.add(lantern5);
-    lightpole.add(light(lantern5.position));
+    //lightpole.add(light(lantern5.position));
 
     const lantern6 = lantern(lanternW,lanternH,lanternD);
     lantern6.position.y=supportPole2.position.y;
     lantern6.position.x = -0.35;
     lantern6.rotation.x=lantern1.rotation.x
     lightpole.add(lantern6);
-    lightpole.add(light(lantern6.position));
+    //lightpole.add(light(lantern6.position));
 
     const lantern7 = lantern(lanternW,lanternH,lanternD);
     lantern7.position.y=supportPole2.position.y;
     lantern7.position.x = 0.35;
     lantern7.rotation.x=lantern1.rotation.x
     lightpole.add(lantern7);
-    lightpole.add(light(lantern7.position));
+    //lightpole.add(light(lantern7.position));
 
     const lantern8 = lantern(lanternW,lanternH,lanternD);
     lantern8.position.y=supportPole2.position.y;
     lantern8.position.x = 1;
     lantern8.rotation.x=lantern1.rotation.x
     lightpole.add(lantern8);
-    lightpole.add(light(lantern8.position));
+    //lightpole.add(light(lantern8.position));
+
+
+    lightpole.add(light(new THREE.Vector3(0,6,0)));
     
 
     return lightpole;
@@ -172,13 +175,13 @@ function lantern(w,h,d){
 
 function light(pos){
     const l = new THREE.Group();
-    const light = new THREE.SpotLight(0xffffff,0.3);
+    const light = new THREE.SpotLight(0xffffff,1);
     light.position.set(pos.x,pos.y,pos.z);
     const targetObj = new THREE.Object3D();
-    targetObj.position.set(pos.x,1,4);//applyQuaternion(new THREE.Quaternion(new THREE.Vector3(0,0,4),0));
+    targetObj.position.set(pos.x,1,4+6);//applyQuaternion(new THREE.Quaternion(new THREE.Vector3(0,0,4),0));
     light.target = targetObj;
-    //light.angle = Math.PI/6;
-    light.distance = 100;
+    //light.angle = Math.PI/5;
+    light.distance = 30;//100;
 
     l.add(light.target);
     l.add(light);

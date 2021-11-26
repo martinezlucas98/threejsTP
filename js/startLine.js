@@ -37,6 +37,10 @@ export function StartLine(){
     //pole.rotation.z = Math.PI/2;
     startObj.add(pole);
 
+    const sLine = line();
+    sLine.position.set(0,0.02,0,);
+    startObj.add(sLine);
+
     return startObj;
 }
 
@@ -94,4 +98,14 @@ function trafficLights(){
 
     return tl;
 
+}
+
+function line(){
+    const texture = new THREE.TextureLoader().load("../textures/start_line.png");
+    const mesh = new THREE.Mesh(
+        new THREE.BoxBufferGeometry(12.5,1,2),
+        new THREE.MeshLambertMaterial({map: texture})
+    );
+    mesh.rotation.y=Math.PI/2;
+    return mesh;
 }

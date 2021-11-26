@@ -1,5 +1,5 @@
 import * as THREE from 'https://cdn.skypack.dev/three@0.134.0';
-import { Track } from "./track.js";
+import { Track, TrackFuncional } from "./track.js";
 
 export function GroundOld(x,z){
     const ground = new THREE.Group();
@@ -75,11 +75,15 @@ export function Ground(x,z){
     grass.rotation.x = -Math.PI/2;
     ground.add(grass);
 
-    const asphalt = new THREE.Mesh( 
+    /*const asphalt = new THREE.Mesh( 
         new THREE.PlaneGeometry( x, z),
         new THREE.MeshStandardMaterial( {color: 0x000000, side: THREE.DoubleSide} ) 
      );
-    asphalt.rotation.x = -Math.PI/2;
+    asphalt.rotation.x = -Math.PI/2;*/
+
+    const asphalt = TrackFuncional();
+    asphalt.position.set(20,-0.5,80);
+
     ground.add( asphalt );
 
     return ground;

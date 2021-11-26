@@ -117,6 +117,7 @@ export function TrackOld(){
     return track;
 }
 
+// Actual track mesh
 export function TrackFuncional(){
     var extrudeSettings = {
         depth : 1,
@@ -162,7 +163,7 @@ export function TrackFuncional(){
     //const geometry = new THREE.ShapeGeometry( ts );
     var geometry = new THREE.ExtrudeGeometry(ts, extrudeSettings);
 
-    const material = new THREE.MeshBasicMaterial( { color: tcolor } );
+    const material = new THREE.MeshStandardMaterial( { color: 0x272727 } );
     const mesh = new THREE.Mesh( geometry, material ) ;
 
     track.add(mesh);
@@ -227,7 +228,7 @@ function trackHole(roadWidth){
     return ts;
 }
 
-
+// Path to make hole on ground/grass
 export function Track(){
     const posX = 20;
     const posZ = -80;
