@@ -11,10 +11,12 @@ import { Fence } from './fence.js';
 import { TrackBorderCurve, TrackBorder, TrackBorderBezier } from './trackBorder.js';
 import { Helicopter } from './helicopter.js';
 
-import {OrbitControls} from "https://cdn.skypack.dev/three@0.134.0/examples/jsm/controls/OrbitControls.js"
+import {OrbitControls} from "https://cdn.skypack.dev/three@0.134.0/examples/jsm/controls/OrbitControls.js";
 import MoveControls from './MoveControls.js';
 
+
 let cameraMode = 1; // 0 fixed rotation on "center", 1 free mode
+let variantSpeed = 1;
 
 const scene = new THREE.Scene();
 buildScene();
@@ -48,12 +50,15 @@ const camera = new THREE.OrthographicCamera(cameraWidth/-2,cameraWidth/2,cameraH
 */
 
 const cameraInitialPos = new THREE.Vector3(120,100,80);
-const cameraLookAt = new THREE.Vector3(-15,5,0);
+const cameraLookAt = new THREE.Vector3(-15,0,0);
 camera.position.set(cameraInitialPos.x,cameraInitialPos.y,cameraInitialPos.z);
 camera.lookAt(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
 let cameraRotAngleXZ = Math.atan(camera.position.z/camera.position.x);
 let cameraRotAngleYZ = 0;
-let distCenter = Math.sqrt((cameraInitialPos.x+cameraLookAt.x)**2 + (cameraInitialPos.y-cameraLookAt.y)**2 + (cameraInitialPos.z-cameraLookAt.z)**2);
+let distCenter;
+let rotYPointA = new THREE.Vector3(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
+let rotYPointB = new THREE.Vector3(cameraLookAt.x+10,cameraLookAt.y,cameraLookAt.z);
+updateRotYaxis();
 
 
 // Renderer
@@ -64,9 +69,39 @@ renderer.setClearColor("skyblue");//("#2a2a35");
 //controls.dragToLook = true;
 
 var controls = new MoveControls(camera);
+//controls.limitMovement = true;
+/*controls.limits = {
+    maxX: 200,
+    minX: -200,
+    maxY: 400,
+    minY: 1,
+    maxZ: 200,
+    minZ: -200
+};*/
 //controls.dragToLook = true;
+const geometryC = new THREE.SphereGeometry( 1, 32, 16 );
+
+const sphereLookAt = new THREE.Mesh( geometryC, new THREE.MeshBasicMaterial( {color: 0xff0000} ) );
+sphereLookAt.position.set(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
+scene.add(sphereLookAt);
+
+const sphereA = new THREE.Mesh( geometryC, new THREE.MeshBasicMaterial( {color: 0x00ff00} ) );
+sphereA.position.set(rotYPointA.x,rotYPointA.y,rotYPointA.z);
+scene.add(sphereA);
+
+const sphereB = new THREE.Mesh( geometryC, new THREE.MeshBasicMaterial( {color: 0x0000ff} ) );
+sphereB.position.set(rotYPointB.x,rotYPointB.y,rotYPointB.z);
+scene.add(sphereB);
+
+
+const sphereC = new THREE.Mesh( geometryC, new THREE.MeshBasicMaterial( {color: 0xffffff} ) );
+sphereC.position.set(0,0,0);
+scene.add(sphereC);
 
 function animate() {
+    updateRotYaxis
+    //sphereA.position.set(rotYPointA.x,rotYPointA.y,rotYPointA.z);
+    sphereB.position.set(rotYPointB.x,rotYPointB.y,rotYPointB.z);
 
 	requestAnimationFrame( animate );
 
@@ -98,81 +133,170 @@ document.body.appendChild(renderer.domElement);
 
 
 function keyController(){
-    const rotSpeed = 0.5;
-    let hemisphere = 1;
-    if(cameraMode){distCenter=Math.sqrt((camera.position.x+cameraLookAt.x)**2 + (camera.position.y-cameraLookAt.y)**2 + (camera.position.z-cameraLookAt.z)**2);}
+    const rotSpeed = 0.5*0.1;
+    if(cameraMode==1){
+        //cameraRotAngleXZ = Math.atan(camera.position.z/camera.position.x);
+        //cameraRotAngleYZ = Math.atan(camera.position.y/camera.position.z);
+        distCenter = Math.sqrt((camera.position.x-cameraLookAt.x)**2 + (camera.position.z-cameraLookAt.z)**2);
+    }
+    
     document.onkeydown = function(event){
         var key = event.code;
         switch (key){
             case "ArrowLeft":
-                controls.enabled = false;
-                //if (cameraMode){
+                if (cameraMode==1){
+                    controls.enabled = false;
                     cameraMode = 0;
                     //camera.position.set(cameraInitialPos.x,cameraInitialPos.y,cameraInitialPos.z);
-                //}
+                    //cameraRotAngleXZ = Math.atan(camera.position.z/camera.position.x);
+                }
 
-                cameraRotAngleXZ+=0.1;
-                camera.position.x = cameraLookAt.x + distCenter * Math.cos( rotSpeed * cameraRotAngleXZ );         
-                camera.position.z = cameraLookAt.z + distCenter * Math.sin( rotSpeed * cameraRotAngleXZ );
+                cameraRotAngleXZ+=rotSpeed;
+                camera.position.x = cameraLookAt.x + distCenter * Math.cos( cameraRotAngleXZ );         
+                camera.position.z = cameraLookAt.z + distCenter * Math.sin( cameraRotAngleXZ );
                 camera.lookAt(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
+
+                updateRotYaxis();
                 break;
             case "ArrowRight":
-                controls.enabled = false;
-                //if (cameraMode){
+                if (cameraMode==1){
+                    controls.enabled = false;
                     cameraMode = 0;
-                    //camera.position.set(cameraInitialPos.x,cameraInitialPos.y,cameraInitialPos.z);
-                //}
-                
-                cameraRotAngleXZ-=0.1;
-                camera.position.x = cameraLookAt.x + distCenter * Math.cos( rotSpeed * cameraRotAngleXZ );         
-                camera.position.z = cameraLookAt.z + distCenter * Math.sin( rotSpeed * cameraRotAngleXZ );
+                }
+
+                cameraRotAngleXZ-=rotSpeed;
+                camera.position.x = cameraLookAt.x + distCenter * Math.cos( cameraRotAngleXZ );         
+                camera.position.z = cameraLookAt.z + distCenter * Math.sin( cameraRotAngleXZ );
                 camera.lookAt(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
+
+                updateRotYaxis();
+
                 break;
             case "ArrowUp":
-                controls.enabled = false;
-                //if (cameraMode){
-                    cameraMode = 0;
-                    //camera.position.set(cameraInitialPos.x,cameraInitialPos.y,cameraInitialPos.z);
-                //}
+                document.title = ""+camera.position.x+" // "+camera.position.z;
+                if(camera.position.y<distCenter){
+                    if (cameraMode == 1){
+                        controls.enabled = false;
+                        cameraMode = 0;
+                        camera.lookAt(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
+                    }
+                    
+                    cameraRotAngleYZ+=rotSpeed/variantSpeed;
+                    variantSpeed+=5;
 
-                cameraRotAngleYZ+=0.1;
-                if (rotSpeed*cameraRotAngleYZ>=2*Math.PI){
-                    cameraRotAngleYZ=0;
-                }
-                console.log(cameraRotAngleYZ);
-                camera.position.y = cameraLookAt.y + distCenter * Math.cos( rotSpeed * cameraRotAngleYZ );    
-                camera.position.z = cameraLookAt.z + distCenter * Math.sin( rotSpeed * cameraRotAngleYZ );
-                //camera.translateY(newPosY-camera.position.y);
-                //camera.rotation.x+=0.1;
-                camera.lookAt(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
-                /*if (hemisphere==1 && rotSpeed*cameraRotAngleYZ>0 && rotSpeed*cameraRotAngleYZ<Math.PI){
-                    hemisphere = -1;
-                    camera.rotation.z=Math.PI;
-                }else {
-                    if (hemisphere==-1){hemisphere = 1;}
-                }*/
+                    //camera.position.x-=rotYPointA.x;
+                    //camera.position.y-=rotYPointA.y;
+                    //camera.position.z-=rotYPointA.z;
+
+                    //camera.rotateOnWorldAxis(getAxis(rotYPointA,rotYPointB),cameraRotAngleYZ);
+
+                    //camera.position.x+=rotYPointA.x;
+                    //camera.position.y+=rotYPointA.y;
+                    //camera.position.z+=rotYPointA.z;
                 
+                    
+                    camera.rotateAroundWorldAxis(cameraLookAt, getAxis(rotYPointA,rotYPointB),cameraRotAngleYZ);
+                }
+
+                break;
+            case "ArrowDown":
+                document.title = ""+camera.position.y;
+                if (cameraMode == 1){
+                    controls.enabled = false;
+                    cameraMode = 0;
+                    camera.lookAt(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
+                }
+                if(camera.position.y>1.9){
+                    cameraRotAngleYZ-=rotSpeed/variantSpeed;
+                    variantSpeed+=5;
+
+                    //camera.position.x-=rotYPointA.x;
+                    //camera.position.y-=rotYPointA.y;
+                    //camera.position.z-=rotYPointA.z;
+
+                    //camera.rotateOnWorldAxis(getAxis(rotYPointA,rotYPointB),cameraRotAngleYZ);
+
+                    //camera.position.x+=rotYPointA.x;
+                    //camera.position.y+=rotYPointA.y;
+                    //camera.position.z+=rotYPointA.z;
+                    
+                    camera.rotateAroundWorldAxis(cameraLookAt, getAxis(rotYPointB,rotYPointA),cameraRotAngleYZ);
+                }
+
+                break;
+            /*case "ArrowUp":
+                if (cameraRotAngleYZ>=2*Math.PI){
+                    cameraRotAngleYZ = 0;
+                }
+                document.title = ""+cameraRotAngleYZ;
+                controls.enabled = false;
+                cameraMode = 0;
+                cameraRotAngleYZ+=rotSpeed;
+                //if (cameraRotAngleYZ>=0){
+                    //cameraRotAngleYZ=0;
+               // }
+                
+                newPosY = camera.worldToLocal(cameraLookAt.y + distCenter * Math.cos( cameraRotAngleYZ ));    
+                newPosZ = camera.worldToLocal(cameraLookAt.z + distCenter * Math.sin( cameraRotAngleYZ ));
+                currentPosY = camera.worldToLocal(camera.position.y);
+                currentPosZ= camera.worldToLocal(camera.position.z);
+                console.log(newPosY);
+                console.log(newPosZ);
+                console.log(currentPosY);
+                console.log(currentPosZ);
+                if (camera.position.x>0 && camera.position.z>0){
+                    // First Quadrant
+                    camera.translateY(newPosY-currentPosY);
+                    camera.translateZ(currentPosZ-newPosZ);
+                } else if (camera.position.x<0 && camera.position.z>0){
+                    // Second Quadrant
+                    camera.translateY(currentPosY-newPosY);
+                    camera.translateZ(currentPosZ-newPosZ);
+                } else if (camera.position.x<0 && camera.position.z<0){
+                    // Third Quadrant
+                    camera.translateY(currentPosY-newPosY);
+                    camera.translateZ(newPosZ-currentPosZ);
+                } else if (camera.position.x>0 && camera.position.z<0){
+                    // Fourth Quadrant
+                    camera.translateY(newPosY-currentPosY);
+                    camera.translateZ(newPosZ-currentPosZ);
+                }
+                
+                if (cameraRotAngleYZ>0 && cameraRotAngleYZ<Math.PI/2){
+                    //camera.up.set(0,-1,0);
+                }else{
+                    //camera.up.set(0,1,0);
+                }
+                camera.lookAt(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
                 break;
             case "ArrowDown":
                 controls.enabled = false;
-                //if (cameraMode){
-                    cameraMode = 0;
-                    //camera.position.set(cameraInitialPos.x,cameraInitialPos.y,cameraInitialPos.z);
+                cameraMode = 0;
+                cameraRotAngleYZ-=rotSpeed;
+                //if (cameraRotAngleYZ<=-Math.PI/2){
+                   // cameraRotAngleYZ=-Math.PI/2;
                 //}
-
-                cameraRotAngleYZ-=0.1;
-                camera.position.y = cameraLookAt.y + distCenter * Math.cos( rotSpeed * cameraRotAngleYZ );         
-                camera.position.z = cameraLookAt.z + distCenter * Math.sin( rotSpeed * cameraRotAngleYZ );
-                camera.lookAt(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
-                break;
+                
+                camera.position.y = cameraLookAt.y + distCenter * Math.cos( cameraRotAngleYZ );    
+                camera.position.z = cameraLookAt.z + distCenter * Math.sin( cameraRotAngleYZ );
+                //camera.translateY(newPosY-camera.position.y);
+                //camera.translateZ(newPosZ-camera.position.z);
+                //camera.lookAt(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
+                break;*/
             case "KeyW":
             case "KeyA":
             case "KeyS":
             case "KeyD":
             case "KeyR":
             case "keyF":
-                controls.enabled = true;
-                cameraMode = 1;
+                if (cameraMode==0){
+                    controls.enabled = true;
+                    controls.lookAt(cameraLookAt);
+                    cameraMode = 1;
+                }
+                break;
+            case "KeyP":
+                console.log("Angle: "+cameraRotAngleXZ + " // Position (X,Y,Z): "+camera.position.x+" , "+camera.position.x+" , "+camera.position.z+" // DistCenter: "+distCenter);
                 break;
         }
     }
@@ -335,3 +459,30 @@ function setLightpoles(posRotArray){
         scene.add(lightpole);
     }
 }
+
+function getAxis(p,q) {
+    return (new THREE.Vector3(p.x-q.x, p.y-q.y, p.z-q.z).normalize());
+}
+
+function updateRotYaxis(){
+    rotYPointB.x = rotYPointA.x + 10*Math.cos(-(Math.PI/2 - cameraRotAngleXZ));
+    rotYPointB.z = rotYPointA.z + 10*Math.sin(-(Math.PI/2 - cameraRotAngleXZ));
+}
+
+THREE.Object3D.prototype.rotateAroundWorldAxis = function() {
+
+    var q1 = new THREE.Quaternion();
+    return function ( point, axis, angle ) {
+
+        q1.setFromAxisAngle( axis, angle );
+
+        this.quaternion.multiplyQuaternions( q1, this.quaternion );
+
+        this.position.sub( point );
+        this.position.applyQuaternion( q1 );
+        this.position.add( point );
+
+        return this;
+    }
+
+}();

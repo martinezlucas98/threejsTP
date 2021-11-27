@@ -36,6 +36,16 @@ import * as THREE from 'https://cdn.skypack.dev/three@0.134.0';
 			this.verticalMax = Math.PI;
 			this.mouseDragOn = false; // internals
 
+			this.limitMovement = false;
+			this.limits = {
+				maxX: 100,
+				minX: -100,
+				maxY: 100,
+				minY: 100,
+				maxZ: 100,
+				minZ: -100
+			};
+
 			this.autoSpeedFactor = 0.0;
 			this.mouseX = 0;
 			this.mouseY = 0;
@@ -222,6 +232,15 @@ import * as THREE from 'https://cdn.skypack.dev/three@0.134.0';
 
 			};
 
+			this.checkLimits = function () {
+				if ( this.object.position.x > this.limits.maxX) this.object.position.x = this.limits.maxX;
+				if ( this.object.position.x < this.limits.minX) this.object.position.x = this.limits.minX;
+				if ( this.object.position.y > this.limits.maxY) this.object.position.y = this.limits.maxY;
+				if ( this.object.position.y < this.limits.minY) this.object.position.y = this.limits.minY;
+				if ( this.object.position.z > this.limits.maxZ) this.object.position.z = this.limits.maxZ;
+				if ( this.object.position.z < this.limits.minZ) this.object.position.z = this.limits.minZ;
+			};
+
 			this.update = function () {
 
 				const targetPosition = new THREE.Vector3();
@@ -248,6 +267,11 @@ import * as THREE from 'https://cdn.skypack.dev/three@0.134.0';
 					if ( this.moveRight ) this.object.translateX( actualMoveSpeed );
 					if ( this.moveUp ) this.object.translateY( actualMoveSpeed );
 					if ( this.moveDown ) this.object.translateY( - actualMoveSpeed );
+
+					if ( this.limitMovement) {
+						this.checkLimits();
+					}
+
 					let actualLookSpeed = delta * this.lookSpeed;
 
 					if ( ! this.activeLook ) {
