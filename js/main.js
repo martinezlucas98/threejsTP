@@ -19,24 +19,6 @@ let cameraMode = 1; // 0 fixed rotation on "center", 1 free mode
 let variantSpeed = 1;
 
 const scene = new THREE.Scene();
-buildScene();
-const helicopter = Helicopter();
-helicopter.position.set(17,25,-40);
-scene.add(helicopter);
-
-
-// Lights
-const ambienLight = new THREE.AmbientLight(0xffffff,0.3);
-scene.add(ambienLight);
-
-const directLight = new THREE.DirectionalLight(0xffffff,0.7);
-directLight.position.set(50,300,0);
-directLight.target.position.set(0,0,0);
-scene.add(directLight);
-scene.add(directLight.target);
-
-//const helper = new THREE.DirectionalLightHelper(directLight);
-//scene.add(helper);
 
 // Camera
 const aspectRatio = window.innerWidth/window.innerHeight;
@@ -59,6 +41,94 @@ let distCenter;
 let rotYPointA = new THREE.Vector3(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
 let rotYPointB = new THREE.Vector3(cameraLookAt.x+10,cameraLookAt.y,cameraLookAt.z);
 updateRotYaxis();
+
+
+//AUDIO
+// create an AudioListener and add it to the camera
+const listener = new THREE.AudioListener();
+camera.add( listener );
+
+// create a global audio source
+const crowdSound = new THREE.Audio( listener );
+
+// load a sound and set it as the Audio object's buffer
+const audioLoader = new THREE.AudioLoader();
+audioLoader.load( '../sounds/crowd_stadium.wav', function( buffer ) {
+    crowdSound.setBuffer( buffer );
+    crowdSound.setLoop( true );
+    crowdSound.setVolume( 0.1 );
+    crowdSound.play();
+});
+
+
+
+// create the PositionalAudio object (passing in the listener)
+const engineSound = new THREE.PositionalAudio( listener );
+
+// load a sound and set it as the PositionalAudio object's buffer
+const audioLoader2 = new THREE.AudioLoader();
+audioLoader2.load( '../sounds/car_engine.mp3', function( buffer ) {
+	engineSound.setBuffer( buffer );
+	engineSound.setRefDistance( 20 );
+    engineSound.setRolloffFactor(2);
+    engineSound.setVolume(5);
+    engineSound.setLoop( true );
+	engineSound.play();
+});
+
+
+// create an object for the sound to play from
+
+const engineAudioMesh = new THREE.Object3D();
+scene.add( engineAudioMesh );
+
+// finally add the sound to the mesh
+engineAudioMesh.add( engineSound );
+
+
+buildScene();
+
+const helicopter = Helicopter();
+helicopter.position.set(17,25,-40);
+scene.add(helicopter);
+
+// create the PositionalAudio object (passing in the listener)
+const helicopterSound = new THREE.PositionalAudio( listener );
+
+// load a sound and set it as the PositionalAudio object's buffer
+const audioLoader3 = new THREE.AudioLoader();
+audioLoader3.load( '../sounds/helicopter_propeller.mp3', function( buffer ) {
+	helicopterSound.setBuffer( buffer );
+	helicopterSound.setRefDistance( 10 );
+    //helicopterSound.setRolloffFactor(1);
+    helicopterSound.setVolume(2);
+    helicopterSound.setLoop( true );
+	helicopterSound.play();
+});
+
+// create an object for the sound to play from
+
+const helicopterAuxMesh = new THREE.Object3D();
+scene.add( helicopterAuxMesh );
+helicopterAuxMesh.position.set(helicopter.position.x,helicopter.position.y,helicopter.position.z);
+
+// finally add the sound to the mesh
+helicopterAuxMesh.add( helicopterSound );
+
+
+
+// Lights
+const ambienLight = new THREE.AmbientLight(0xffffff,0.3);
+scene.add(ambienLight);
+
+const directLight = new THREE.DirectionalLight(0xffffff,0.7);
+directLight.position.set(50,300,0);
+directLight.target.position.set(0,0,0);
+scene.add(directLight);
+scene.add(directLight.target);
+
+//const helper = new THREE.DirectionalLightHelper(directLight);
+//scene.add(helper);
 
 
 // Renderer
@@ -296,7 +366,16 @@ function keyController(){
                 }
                 break;
             case "KeyP":
-                console.log("Angle: "+cameraRotAngleXZ + " // Position (X,Y,Z): "+camera.position.x+" , "+camera.position.x+" , "+camera.position.z+" // DistCenter: "+distCenter);
+                if(crowdSound.isPlaying){
+                    crowdSound.pause();
+                    engineSound.pause();
+                    helicopterSound.pause();
+                }else{
+                    crowdSound.play();
+                    engineSound.play();
+                    helicopterSound.play();
+                }
+                //console.log("Angle: "+cameraRotAngleXZ + " // Position (X,Y,Z): "+camera.position.x+" , "+camera.position.x+" , "+camera.position.z+" // DistCenter: "+distCenter);
                 break;
         }
     }
@@ -314,7 +393,8 @@ function buildScene(){
 
     const carsY = 1;
     const carsDist = 8;
-    for (let i=0; i<6; i++){
+    const carRows = 6;
+    for (let i=0; i<carRows; i++){
         const car1 = Car();
         car1.position.set(11-i*carsDist,carsY,72);
         scene.add(car1);
@@ -324,6 +404,11 @@ function buildScene(){
         const car3 = Car();
         car3.position.set(15-i*carsDist,carsY,78);
         scene.add(car3);
+
+        // set position for obj with car engine audio
+        if (i==carRows/2){
+            engineAudioMesh.position.set(13-i*carsDist,carsY,75);
+        }
     }
     
 
