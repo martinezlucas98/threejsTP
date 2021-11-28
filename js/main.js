@@ -73,7 +73,7 @@ audioLoader2.load( '../sounds/car_engine.mp3', function( buffer ) {
     engineSound.setRolloffFactor(2);
     engineSound.setVolume(5);
     engineSound.setLoop( true );
-	engineSound.play();
+    engineSound.play();
 });
 
 
@@ -101,7 +101,7 @@ audioLoader3.load( '../sounds/helicopter_propeller.mp3', function( buffer ) {
 	helicopterSound.setBuffer( buffer );
 	helicopterSound.setRefDistance( 10 );
     //helicopterSound.setRolloffFactor(1);
-    helicopterSound.setVolume(2);
+    helicopterSound.setVolume(2 );
     helicopterSound.setLoop( true );
 	helicopterSound.play();
 });
@@ -114,7 +114,6 @@ helicopterAuxMesh.position.set(helicopter.position.x,helicopter.position.y,helic
 
 // finally add the sound to the mesh
 helicopterAuxMesh.add( helicopterSound );
-
 
 
 // Lights
@@ -208,6 +207,43 @@ function keyController(){
         //cameraRotAngleXZ = Math.atan(camera.position.z/camera.position.x);
         //cameraRotAngleYZ = Math.atan(camera.position.y/camera.position.z);
         distCenter = Math.sqrt((camera.position.x-cameraLookAt.x)**2 + (camera.position.z-cameraLookAt.z)**2);
+
+        if (camera.position.x >= cameraLookAt.x && camera.position.z > cameraLookAt.z){
+            // First Quadrant
+            cameraRotAngleXZ = Math.atan((camera.position.z-cameraLookAt.z)/(camera.position.x-cameraLookAt.x));
+            document.title = "1er Cuadrante";
+            console.log("ATAN: ",cameraRotAngleXZ);
+
+        } else if (camera.position.x <= cameraLookAt.x && camera.position.z > cameraLookAt.z){
+            // Second Quadrant
+            cameraRotAngleXZ = -Math.atan((camera.position.x-cameraLookAt.x)/(camera.position.z-cameraLookAt.z))+Math.PI/2;
+            document.title = "2do Cuadrante";
+            console.log("ATAN: ",cameraRotAngleXZ);
+
+        } else if (camera.position.x < cameraLookAt.x && camera.position.z <= cameraLookAt.z){
+            // Third Quadrant
+            cameraRotAngleXZ = -(Math.atan((camera.position.x-cameraLookAt.x)/(camera.position.z-cameraLookAt.z))+Math.PI/2);
+            document.title = "3er Cuadrante";
+            console.log("ATAN: ",cameraRotAngleXZ);
+
+        } else if (camera.position.x > cameraLookAt.x && camera.position.z <= cameraLookAt.z){
+            // Fourth Quadrant
+            cameraRotAngleXZ = Math.atan((camera.position.z-cameraLookAt.z)/(camera.position.x-cameraLookAt.x));
+            document.title = "4to Cuadrante";
+            console.log("ATAN: ",cameraRotAngleXZ);
+
+        }/* else if (camera.position.x == 0 && camera.position.z > 0){ // AXIS
+            cameraRotAngleXZ = Math.PI/2;
+        } else if (camera.position.x == 0 && camera.position.z < 0){
+            cameraRotAngleXZ = -Math.PI/2;
+        } else if (camera.position.x > 0 && camera.position.z == 0){
+            cameraRotAngleXZ = 0;
+        } else if (camera.position.x < 0 && camera.position.z == 0){
+            cameraRotAngleXZ = Math.PI;
+        } else {
+            // Backup plan
+            cameraRotAngleXZ = Math.atan((camera.position.z-cameraLookAt.z)/(camera.position.x-cameraLookAt.x));
+        }*/
     }
     
     document.onkeydown = function(event){
@@ -218,13 +254,15 @@ function keyController(){
                     controls.enabled = false;
                     cameraMode = 0;
                     //camera.position.set(cameraInitialPos.x,cameraInitialPos.y,cameraInitialPos.z);
-                    //cameraRotAngleXZ = Math.atan(camera.position.z/camera.position.x);
+                    //cameraRotAngleXZ = Math.asin((camera.position.z-cameraLookAt.z)/distCenter);//camera.position.x-cameraLookAt.x
+                    console.log("MATH FUNCTION:: ",cameraRotAngleXZ);
                 }
-
+                
                 cameraRotAngleXZ+=rotSpeed;
                 camera.position.x = cameraLookAt.x + distCenter * Math.cos( cameraRotAngleXZ );         
                 camera.position.z = cameraLookAt.z + distCenter * Math.sin( cameraRotAngleXZ );
                 camera.lookAt(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
+                console.log(cameraRotAngleXZ);
 
                 updateRotYaxis();
                 break;
@@ -248,6 +286,7 @@ function keyController(){
                     if (cameraMode == 1){
                         controls.enabled = false;
                         cameraMode = 0;
+                        updateRotYaxis();
                         camera.lookAt(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
                     }
                     
@@ -274,6 +313,7 @@ function keyController(){
                 if (cameraMode == 1){
                     controls.enabled = false;
                     cameraMode = 0;
+                    updateRotYaxis();
                     camera.lookAt(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
                 }
                 if(camera.position.y>1.9){
