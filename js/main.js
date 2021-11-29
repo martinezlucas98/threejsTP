@@ -21,6 +21,12 @@ let variantSpeed = 1;
 
 const scene = new THREE.Scene();
 
+// Renderer
+const canvas = document.querySelector('#c');
+const renderer = new THREE.WebGLRenderer({canvas,antialias:true});
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setClearColor("skyblue");//("#2a2a35");
+
 // Camera
 const aspectRatio = window.innerWidth/window.innerHeight;
 const camera = new THREE.PerspectiveCamera(45,aspectRatio,0.10,1000);
@@ -127,16 +133,20 @@ directLight.target.position.set(0,0,0);
 scene.add(directLight);
 scene.add(directLight.target);
 
-//const helper = new THREE.DirectionalLightHelper(directLight);
-//scene.add(helper);
+// cubemap
+{
+    const loader = new THREE.CubeTextureLoader();
+    const texture = loader.load([
+      '../textures/skyCubemap/right_sky.png',
+      '../textures/skyCubemap/left_sky.png',
+      '../textures/skyCubemap/top_sky.png',
+      '../textures/skyCubemap/bottom_sky.png',
+      '../textures/skyCubemap/front_sky.png',
+      '../textures/skyCubemap/back_sky.png'
+    ]);
+    scene.background = texture;
+  }
 
-
-// Renderer
-const renderer = new THREE.WebGLRenderer({antialias:true});
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setClearColor("skyblue");//("#2a2a35");
-//controls.autoForward = false;
-//controls.dragToLook = true;
 
 var controls = new MoveControls(camera);
 //controls.limitMovement = true;
@@ -169,7 +179,7 @@ sphereC.position.set(0,0,0);
 scene.add(sphereC);
 
 function animate() {
-    updateRotYaxis
+    updateRotYaxis();
     //sphereA.position.set(rotYPointA.x,rotYPointA.y,rotYPointA.z);
     sphereB.position.set(rotYPointB.x,rotYPointB.y,rotYPointB.z);
 
@@ -489,7 +499,7 @@ function buildScene(){
     scene.add(seats4);
 
     const seats5 = Seats(130,10,35);
-    seats5.position.set(-150,seatPosY,-15);
+    seats5.position.set(-151.5,seatPosY,-15);
     seats5.rotation.y=Math.PI/2;
     scene.add(seats5);
 
@@ -499,14 +509,20 @@ function buildScene(){
     scene.add(seatsVIP);
 
 
+    const fenceHeight = 5;
 
-    const fence1 = Fence(300,5);
+    const fence1 = Fence(300,fenceHeight);
     fence1.position.set(0,0.5,84.5);
     scene.add(fence1);
 
-    const fence2 = Fence(150,5);
+    const fence2 = Fence(165,fenceHeight);
     fence2.position.set(-70,0.5,-124.5);
     scene.add(fence2);
+
+    const fence3 = Fence(210,fenceHeight);
+    fence3.position.set(-151,0.5,-20);
+    fence3.rotation.y=Math.PI/2;
+    scene.add(fence3);
 
     const lightpoleY = 3;
     const lightpolePositionsRotations = [

@@ -99,6 +99,11 @@ export function SeatsVIP(radius,floors){
     heliport.position.y=0.5+currentHeight;
     heliport.rotation.y=-Math.PI/1.2;
     building.add(heliport)
+
+    /*const elevator = new THREE.Mesh(
+        new THREE.BoxBufferGeometry(0.2,3,0.2),
+        new THREE.MeshLambertMaterial({color: 0x999999})
+    );*/
     
     return building;
 }
