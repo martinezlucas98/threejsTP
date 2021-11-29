@@ -46,7 +46,7 @@ export function Car(){
 
     const mainChasis = new THREE.Mesh(
         new THREE.BoxBufferGeometry(chasisLen,chasisHeight,chasisDepth),
-        new THREE.MeshPhongMaterial({color: carColor})
+        new THREE.MeshLambertMaterial({color: carColor})
     );
     mainChasis.position.y=0.35;
     car.add(mainChasis);
@@ -54,7 +54,7 @@ export function Car(){
     const carbonFiberTexture = new THREE.TextureLoader().load("../textures/carbon_fiber.jpg");
     const wing = new THREE.Mesh(
         new THREE.BoxBufferGeometry(0.3,0.06,1.25*chasisDepth),
-        new THREE.MeshPhongMaterial({map: carbonFiberTexture})
+        new THREE.MeshLambertMaterial({map: carbonFiberTexture})
     );
     wing.position.y=0.95;
     wing.position.x=-(chasisLen/2 -0.03);
@@ -62,7 +62,7 @@ export function Car(){
 
     const wingSupport = new THREE.Mesh(
         new THREE.BoxBufferGeometry(0.15,0.4,0.2),
-        new THREE.MeshPhongMaterial({map: carbonFiberTexture})
+        new THREE.MeshLambertMaterial({map: carbonFiberTexture})
     );
     wingSupport.position.y=chasisHeight;
     wingSupport.position.x=-(chasisLen/2 - 0.1);
@@ -71,7 +71,7 @@ export function Car(){
 
     const number = new THREE.Mesh(
         new THREE.CylinderGeometry( 0.3, 0.3, 0.01, 32 ),
-        [new THREE.MeshPhongMaterial({map:getNumberTexture(num,carColor)}),new THREE.MeshPhongMaterial({map:getNumberTexture(num,carColor)}),new THREE.MeshPhongMaterial({map:getNumberTexture(num,carColor)})]
+        [new THREE.MeshLambertMaterial({map:getNumberTexture(num,carColor)}),new THREE.MeshLambertMaterial({map:getNumberTexture(num,carColor)}),new THREE.MeshLambertMaterial({map:getNumberTexture(num,carColor)})]
     );
     number.position.y=mainChasis.position.y;
     number.position.z=chasisDepth/2;
@@ -81,7 +81,7 @@ export function Car(){
 
     const number2 = new THREE.Mesh(
         new THREE.CylinderGeometry( 0.3, 0.3, 0.005, 32 ),
-        [new THREE.MeshPhongMaterial({map:getNumberTexture(num,carColor)}),new THREE.MeshPhongMaterial({map:getNumberTexture(num,carColor)}),new THREE.MeshPhongMaterial({map:getNumberTexture(num,carColor)})]
+        [new THREE.MeshLambertMaterial({map:getNumberTexture(num,carColor)}),new THREE.MeshLambertMaterial({map:getNumberTexture(num,carColor)}),new THREE.MeshLambertMaterial({map:getNumberTexture(num,carColor)})]
     );
     number2.position.y=mainChasis.position.y;
     number2.position.z=-chasisDepth/2;
@@ -91,7 +91,7 @@ export function Car(){
 
     const cabin = new THREE.Mesh(
         prismTrapezie([-0.825,0,0],[1,0,0],[-0.4125,0.4,0],[0.4125,0.4,0], 1.2),
-        new THREE.MeshPhongMaterial({color: 0x282828})
+        new THREE.MeshLambertMaterial({color: 0x282828})
     );
     cabin.position.x = -0.3;
     cabin.position.y = chasisHeight-0.01;
@@ -100,7 +100,7 @@ export function Car(){
     
     const nose = new THREE.Mesh(
         prismTrapezie([0,0,0],[0.4,0,0],[0,0.75,0],[0.4,0.35,0], chasisDepth),
-        new THREE.MeshPhongMaterial({color: carColor})
+        new THREE.MeshLambertMaterial({color: carColor})
     );
     nose.position.x = chasisDepth;
     nose.position.y = -0.0245;

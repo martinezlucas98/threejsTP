@@ -12,13 +12,13 @@ export function Person(){
 
     const head = new THREE.Mesh( 
         new THREE.SphereGeometry( 0.15, 16, 16),
-        new THREE.MeshStandardMaterial( { color: skinColor } )
+        new THREE.MeshLambertMaterial( { color: skinColor } )
     );
     person.add(head);
 
     const body = new THREE.Mesh(
         new THREE.CylinderGeometry(0.3,0.1,0.7,3),//bodyGeometry(),
-        new THREE.MeshStandardMaterial( { color: shirtColor } )
+        new THREE.MeshLambertMaterial( { color: shirtColor } )
     );
     body.position.y=-0.5
     //body.rotation.x = Math.PI;
