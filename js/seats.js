@@ -96,14 +96,50 @@ export function SeatsVIP(radius,floors){
         new THREE.CylinderGeometry( radius/2, radius/2, 0.2, 32 ), 
         new THREE.MeshLambertMaterial( {map: heliTexture} )
     );
-    heliport.position.y=0.5+currentHeight;
+    heliport.position.y=0.1+currentHeight;
     heliport.rotation.y=-Math.PI/1.2;
     building.add(heliport)
+    
+    const elevator = new THREE.Mesh(
+        new THREE.BoxBufferGeometry(2,currentHeight+2,2.5),
+        material
+    );
+    elevator.position.set(radius/2 + 3,currentHeight/2 +1.5,-5);
+    elevator.rotation.y=-Math.PI/1.2;
+    building.add(elevator);
 
-    /*const elevator = new THREE.Mesh(
-        new THREE.BoxBufferGeometry(0.2,3,0.2),
-        new THREE.MeshLambertMaterial({color: 0x999999})
-    );*/
+    let elevatorFloorHeight = 4;
+    const doorTexture = new THREE.TextureLoader().load("../textures/elevator_door.png");
+    for (let i=0; i<floors; i++){
+        const door = new THREE.Mesh(
+            new THREE.BoxBufferGeometry(1.5,2,0.05),
+            new THREE.MeshPhongMaterial({map: doorTexture})
+        );
+        door.position.set(radius - 2.9,0.5+elevatorFloorHeight+1,-4.5);
+        door.rotation.y=Math.PI/2-Math.PI/1.2;
+        elevatorFloorHeight+=4.5;
+        building.add(door);
+    }
+    const door = new THREE.Mesh(
+        new THREE.BoxBufferGeometry(1.5,2,0.05),
+        new THREE.MeshPhongMaterial({map: doorTexture})
+    );
+    door.position.set(radius - 2.9,1+elevatorFloorHeight+1,-4.5);
+    door.rotation.y=Math.PI/2-Math.PI/1.2;
+    elevatorFloorHeight+=4.5;
+    building.add(door);
+
+    const entry = new THREE.Mesh(
+        new THREE.BoxBufferGeometry(7,3,2.5),
+        [material,new THREE.MeshPhongMaterial({map: new THREE.TextureLoader().load("../textures/entry_door.jpg")}),material,material,material,material]
+    );
+    entry.position.set(radius/2 + 3,2,-5);
+    entry.rotation.y=-Math.PI/1.2;
+    building.add(entry);
+
+    const people = populateVIP(radius-1.5,100,floors);
+    people.position.set(0,5.5,0);
+    building.add(people);
     
     return building;
 }
@@ -116,13 +152,30 @@ function populate(seatRows,len,populationPercentage){
             let prob = Math.floor(Math.random()*100);
             if (prob<=populationPercentage){
                 let person = Person();
-                person.position.y = i+1.3;
-                person.position.z = -i;
-                person.position.x = j-len/2;
+                person.position.set(j-len/2,i+1.3,-i);
                 people.add(person);
             }
         }
     }
 
+    return people;
+}
+
+function populateVIP(radius,populationPercentage,floors){
+    const num_segments = 32;
+    const people = new THREE.Group();
+    for (let j = 0; j<floors; j++){
+        for (let i = 0; i < num_segments; i++)   {
+            let theta = Math.PI/8 + 1.3*Math.PI*i / num_segments;//get the current angle 
+            let x = radius * Math.cos(theta);//calculate the x component 
+            let z = radius * Math.sin(theta);//calculate the y component 
+            let prob = Math.floor(Math.random()*100);
+            if (prob<=populationPercentage){
+                let person = Person();
+                person.position.set(x,4.5*j,z);
+                people.add(person);
+            }
+        }
+    }
     return people;
 }
