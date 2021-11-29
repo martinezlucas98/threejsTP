@@ -149,7 +149,7 @@ function getNumberTexture(number,carColor){
 }
 
 
-function wheel(){
+export function wheel(){
     const wheelTexture = new THREE.TextureLoader().load("../textures/wheel.png");
     const wheel = new THREE.Mesh(
         new THREE.CylinderGeometry( 0.35, 0.35, 0.3, 32 ),

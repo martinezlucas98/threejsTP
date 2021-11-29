@@ -10,6 +10,7 @@ import { StartLine } from './startLine.js';
 import { Fence } from './fence.js';
 import { TrackBorderCurve, TrackBorder, TrackBorderBezier } from './trackBorder.js';
 import { Helicopter } from './helicopter.js';
+import { PitsStop } from './pitsStop.js';
 
 import {OrbitControls} from "https://cdn.skypack.dev/three@0.134.0/examples/jsm/controls/OrbitControls.js";
 import MoveControls from './MoveControls.js';
@@ -571,6 +572,13 @@ function buildScene(){
     trackBorder4.position.set(-145.1,tbY,-60);
     trackBorder4.rotation.z=Math.PI/2;
     scene.add(trackBorder4);
+
+
+    const pits = PitsStop(120);
+    pits.position.set(-134.95,2.9,-20)
+    pits.rotation.y=Math.PI/2;
+    scene.add(pits);
+
     
 }
 
