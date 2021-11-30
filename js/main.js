@@ -38,7 +38,7 @@ const cameraHeigh = cameraWidth/aspectRatio;
 const camera = new THREE.OrthographicCamera(cameraWidth/-2,cameraWidth/2,cameraHeight/2,cameraHeight/-2,0,1000)
 */
 
-const cameraInitialPos = new THREE.Vector3(120,100,80);
+const cameraInitialPos = new THREE.Vector3(32,33,-199);//(120,100,80);
 const cameraLookAt = new THREE.Vector3(-15,0,0);
 camera.position.set(cameraInitialPos.x,cameraInitialPos.y,cameraInitialPos.z);
 camera.lookAt(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
@@ -145,7 +145,7 @@ scene.add(directLight.target);
       '../textures/skyCubemap/back_sky.png'
     ]);
     scene.background = texture;
-  }
+}
 
 
 var controls = new MoveControls(camera);
@@ -222,25 +222,25 @@ function keyController(){
         if (camera.position.x >= cameraLookAt.x && camera.position.z > cameraLookAt.z){
             // First Quadrant
             cameraRotAngleXZ = Math.atan((camera.position.z-cameraLookAt.z)/(camera.position.x-cameraLookAt.x));
-            document.title = "1er Cuadrante";
+            //document.title = "1er Cuadrante";
             console.log("ATAN: ",cameraRotAngleXZ);
 
         } else if (camera.position.x <= cameraLookAt.x && camera.position.z > cameraLookAt.z){
             // Second Quadrant
             cameraRotAngleXZ = -Math.atan((camera.position.x-cameraLookAt.x)/(camera.position.z-cameraLookAt.z))+Math.PI/2;
-            document.title = "2do Cuadrante";
+            //document.title = "2do Cuadrante";
             console.log("ATAN: ",cameraRotAngleXZ);
 
         } else if (camera.position.x < cameraLookAt.x && camera.position.z <= cameraLookAt.z){
             // Third Quadrant
             cameraRotAngleXZ = -(Math.atan((camera.position.x-cameraLookAt.x)/(camera.position.z-cameraLookAt.z))+Math.PI/2);
-            document.title = "3er Cuadrante";
+            //document.title = "3er Cuadrante";
             console.log("ATAN: ",cameraRotAngleXZ);
 
         } else if (camera.position.x > cameraLookAt.x && camera.position.z <= cameraLookAt.z){
             // Fourth Quadrant
             cameraRotAngleXZ = Math.atan((camera.position.z-cameraLookAt.z)/(camera.position.x-cameraLookAt.x));
-            document.title = "4to Cuadrante";
+            //document.title = "4to Cuadrante";
             console.log("ATAN: ",cameraRotAngleXZ);
 
         }/* else if (camera.position.x == 0 && camera.position.z > 0){ // AXIS
@@ -428,6 +428,8 @@ function keyController(){
                 }
                 //console.log("Angle: "+cameraRotAngleXZ + " // Position (X,Y,Z): "+camera.position.x+" , "+camera.position.x+" , "+camera.position.z+" // DistCenter: "+distCenter);
                 break;
+            case "KeyC":
+                console.log(camera.position);
         }
     }
 }
@@ -524,6 +526,11 @@ function buildScene(){
     fence3.rotation.y=Math.PI/2;
     scene.add(fence3);
 
+    const fence4 = Fence(80,fenceHeight);
+    fence4.position.set(120,0.5,10);
+    fence4.rotation.y=-Math.PI/3.99;
+    scene.add(fence4);
+
     const lightpoleY = 3;
     const lightpolePositionsRotations = [
         [new THREE.Vector3(-100,lightpoleY,60), new THREE.Vector3(0,0,0)],
@@ -543,51 +550,7 @@ function buildScene(){
     
     //setArtificialLights(lightsPos);
 
-    const tbY = 0.52;
-    const curveThickness = 15;
-
-    let moveto = [0,0];
-    let quadratic1 = [40/2,30,40.3,0];
-    let quadratic2 = [quadratic1[0],quadratic1[1]-curveThickness,moveto[0],moveto[1]];
-    const trackBorderCurve1 = TrackBorderCurve(moveto,quadratic1,quadratic2);
-    trackBorderCurve1.position.set(-0.3,tbY,-55);
-    trackBorderCurve1.rotation.z=Math.PI/3;
-    scene.add(trackBorderCurve1);
-
-    moveto = [0,-2.5];
-    quadratic1 = [50/2.6,50,50.5,0];
-    quadratic2 = [quadratic1[0],quadratic1[1]-curveThickness,moveto[0],moveto[1]];
-    const trackBorderCurve2 = TrackBorderCurve(moveto,quadratic1,quadratic2);
-    trackBorderCurve2.position.set(-12.7,tbY,-51);
-    trackBorderCurve2.rotation.z=Math.PI/3.3;
-    scene.add(trackBorderCurve2);
-
-    moveto = [0,-8.1];
-    quadratic1 = [-45/2,-30,-45.3,-1.45];
-    quadratic2 = [quadratic1[0],quadratic1[1]-curveThickness,moveto[0],moveto[1]];
-    const trackBorderCurve3 = TrackBorderCurve(moveto,quadratic1,quadratic2);
-    trackBorderCurve3.position.set(-7,tbY,-70);
-    trackBorderCurve3.rotation.z=Math.PI/3;
-    scene.add(trackBorderCurve3);
-
-    const tbWidth = 1;
-    const trackBorder1 = TrackBorder(tbWidth,180);
-    trackBorder1.position.set(-90,tbY,68.9);
-    scene.add(trackBorder1);
-
-    const trackBorder2 = TrackBorder(tbWidth,180);
-    trackBorder2.position.set(-90,tbY,80.1);
-    scene.add(trackBorder2);
-
-    const trackBorder3 = TrackBorder(tbWidth,70);
-    trackBorder3.position.set(84.71,tbY,-6);
-    trackBorder3.rotation.z=Math.PI/4;
-    scene.add(trackBorder3);
-
-    const trackBorder4 = TrackBorder(tbWidth,100);
-    trackBorder4.position.set(-145.1,tbY,-60);
-    trackBorder4.rotation.z=Math.PI/2;
-    scene.add(trackBorder4);
+    setTrackBorders();
 
 
     const pits = PitsStop(120);
@@ -607,6 +570,95 @@ function setLightpoles(posRotArray){
         lightpole.rotation.set(rot.x,rot.y,rot.z);
         scene.add(lightpole);
     }
+}
+
+function setTrackBorders(){
+    const tbY = 0.52;
+    const curveThickness = 2;
+
+    let moveto = [0,0];
+    let quadratic1 = [40/2,30,40.3,1];
+    let quadratic2 = [quadratic1[0],quadratic1[1]-curveThickness,moveto[0],moveto[1]];
+    const trackBorderCurve1 = TrackBorderCurve(moveto,quadratic1,quadratic2);
+    trackBorderCurve1.position.set(1.2,tbY,-56.5);
+    trackBorderCurve1.rotation.z=Math.PI/2.9;
+    scene.add(trackBorderCurve1);
+
+    moveto = [0,-2.5];
+    quadratic1 = [50/2.6,35,50.5,0];
+    quadratic2 = [quadratic1[0],quadratic1[1]-curveThickness,moveto[0],moveto[1]];
+    const trackBorderCurve2 = TrackBorderCurve(moveto,quadratic1,quadratic2);
+    trackBorderCurve2.position.set(-12.8,tbY,-51.3);
+    trackBorderCurve2.rotation.z=Math.PI/3.2;
+    scene.add(trackBorderCurve2);
+
+    moveto = [0,-8.1];
+    quadratic1 = [-43/2,-42.4,-45.3,-1.45];
+    quadratic2 = [quadratic1[0],quadratic1[1]-curveThickness,moveto[0],moveto[1]];
+    const trackBorderCurve3 = TrackBorderCurve(moveto,quadratic1,quadratic2);
+    trackBorderCurve3.position.set(-7.2,tbY,-69.5);
+    trackBorderCurve3.rotation.z=Math.PI/3;
+    scene.add(trackBorderCurve3);//arreglar
+
+    moveto = [0,-9];
+    quadratic1 = [-57/2,-35,-45.3,-1.45];
+    quadratic2 = [quadratic1[0],quadratic1[1]-curveThickness,moveto[0],moveto[1]];
+    const trackBorderCurve4 = TrackBorderCurve(moveto,quadratic1,quadratic2);
+    trackBorderCurve4.position.set(3.8,tbY,-75.3);
+    trackBorderCurve4.rotation.z=Math.PI/2.5;
+    scene.add(trackBorderCurve4);
+
+    moveto = [0,-1];
+    quadratic1 = [-23/2,-15,-30,0];
+    quadratic2 = [quadratic1[0],quadratic1[1]-curveThickness,moveto[0],moveto[1]];
+    const trackBorderCurve5 = TrackBorderCurve(moveto,quadratic1,quadratic2);
+    trackBorderCurve5.position.set(-126,tbY,-120);
+    trackBorderCurve5.rotation.z=-Math.PI/3.6;
+    scene.add(trackBorderCurve5);
+
+    moveto = [0,0];
+    quadratic1 = [26/2,15,25,0];
+    quadratic2 = [quadratic1[0],quadratic1[1]-curveThickness,moveto[0],moveto[1]];
+    const trackBorderCurve6 = TrackBorderCurve(moveto,quadratic1,quadratic2);
+    trackBorderCurve6.position.set(-145,tbY,62.9);
+    trackBorderCurve6.rotation.z=Math.PI/4;
+    scene.add(trackBorderCurve6);
+
+    moveto = [0,-3];
+    quadratic1 = [32/2,28.2,40,0];
+    quadratic2 = [quadratic1[0],quadratic1[1]-curveThickness,moveto[0],moveto[1]];
+    const trackBorderCurve7 = TrackBorderCurve(moveto,quadratic1,quadratic2);
+    trackBorderCurve7.position.set(135.2,tbY,80.2);
+    trackBorderCurve7.rotation.z=-Math.PI/2.5;
+    scene.add(trackBorderCurve7);
+
+    moveto = [0,1.1];
+    quadratic1 = [25.5/2,5.9,20,0];
+    quadratic2 = [quadratic1[0],quadratic1[1]-curveThickness,moveto[0],moveto[1]];
+    const trackBorderCurve8 = TrackBorderCurve(moveto,quadratic1,quadratic2);
+    trackBorderCurve8.position.set(94,tbY,-9.5);
+    trackBorderCurve8.rotation.z=1.20*Math.PI;
+    scene.add(trackBorderCurve8);
+
+
+    const tbWidth = 1;
+    const trackBorder1 = TrackBorder(tbWidth,180);
+    trackBorder1.position.set(-90,tbY,68.9);
+    scene.add(trackBorder1);
+
+    const trackBorder2 = TrackBorder(tbWidth,180);
+    trackBorder2.position.set(-90,tbY,80.1);
+    scene.add(trackBorder2);
+
+    const trackBorder3 = TrackBorder(tbWidth,70);
+    trackBorder3.position.set(84.71,tbY,-6);
+    trackBorder3.rotation.z=Math.PI/4;
+    scene.add(trackBorder3);
+
+    const trackBorder4 = TrackBorder(tbWidth,100);
+    trackBorder4.position.set(-145.1,tbY,-60);
+    trackBorder4.rotation.z=Math.PI/2;
+    scene.add(trackBorder4);
 }
 
 function getAxis(p,q) {

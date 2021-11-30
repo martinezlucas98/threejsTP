@@ -1,6 +1,6 @@
 import * as THREE from 'https://cdn.skypack.dev/three@0.134.0';
 
-export function TrackBorderCurve(moveto,quadratic1,quadratic2){
+export function TrackBorderCurve(moveto,quadratic1,quadratic2,trackWidth){
     var extrudeSettings = {
         depth : 1,
         steps : 1,
@@ -10,8 +10,9 @@ export function TrackBorderCurve(moveto,quadratic1,quadratic2){
 
     const tb = new THREE.Shape(); // trackBorder
 
-    tb.moveTo(moveto[0],moveto[1]);
+    tb.moveTo(moveto[0],moveto[1]+1);
     tb.quadraticCurveTo(quadratic1[0],quadratic1[1],quadratic1[2],quadratic1[3]);
+    tb.lineTo(quadratic1[2],quadratic1[3]-1);
     tb.quadraticCurveTo(quadratic2[0],quadratic2[1],quadratic2[2],quadratic2[3]);
 
     var geometry = new THREE.ExtrudeGeometry(tb, extrudeSettings);
