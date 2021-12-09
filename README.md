@@ -57,3 +57,8 @@ The blue sphere is used with the green one to make an axis used for the vertical
 
 There is also a red sphere, which represents the camera's "look at" point during the rotations, which is the same as the fixed point P represented by the green sphere. Therefore it's located in the same position as the green sphere. That is why you cannot see the red sphere.
 
+## Bugs 🐛 🐛
+
+If a bug occurs please refresh the web page and check if it still occurs.
+
+> For example, in just one of our many (hundreds) tests, while rotating the up and down key where inverted. Refreshing the web page solved it.
