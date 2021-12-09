@@ -11,6 +11,7 @@ import { Fence } from './fence.js';
 import { TrackBorderCurve, TrackBorder, TrackBorderBezier } from './trackBorder.js';
 import { Helicopter } from './helicopter.js';
 import { PitsStop } from './pitsStop.js';
+import { Banner } from './banner.js';
 
 import {OrbitControls} from "https://cdn.skypack.dev/three@0.134.0/examples/jsm/controls/OrbitControls.js";
 import MoveControls from './MoveControls.js';
@@ -18,6 +19,7 @@ import MoveControls from './MoveControls.js';
 
 let cameraMode = 1; // 0 fixed rotation on "center", 1 free mode
 let variantSpeed = 1;
+let devMode = false;
 
 const scene = new THREE.Scene();
 
@@ -38,10 +40,12 @@ const cameraHeigh = cameraWidth/aspectRatio;
 const camera = new THREE.OrthographicCamera(cameraWidth/-2,cameraWidth/2,cameraHeight/2,cameraHeight/-2,0,1000)
 */
 
-const cameraInitialPos = new THREE.Vector3(32,33,-199);//(120,100,80);
+const cameraInitialPos = new THREE.Vector3(-107,35,45);//(120,100,80);
 const cameraLookAt = new THREE.Vector3(-15,0,0);
 camera.position.set(cameraInitialPos.x,cameraInitialPos.y,cameraInitialPos.z);
-camera.lookAt(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
+//camera.lookAt(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
+camera.lookAt(0,0,65);
+
 let cameraRotAngleXZ = Math.atan(camera.position.z/camera.position.x);
 let cameraRotAngleYZ = 0;
 let distCenter;
@@ -64,7 +68,7 @@ audioLoader.load( '../sounds/crowd_stadium.wav', function( buffer ) {
     crowdSound.setBuffer( buffer );
     crowdSound.setLoop( true );
     crowdSound.setVolume( 0.1 );
-    crowdSound.play();
+    crowdSound.autoPlay = false;
 });
 
 
@@ -80,7 +84,7 @@ audioLoader2.load( '../sounds/car_engine.mp3', function( buffer ) {
     engineSound.setRolloffFactor(2);
     engineSound.setVolume(5);
     engineSound.setLoop( true );
-    engineSound.play();
+    engineSound.autoPlay = false;
 });
 
 
@@ -110,7 +114,7 @@ audioLoader3.load( '../sounds/helicopter_propeller.mp3', function( buffer ) {
     //helicopterSound.setRolloffFactor(1);
     helicopterSound.setVolume(2 );
     helicopterSound.setLoop( true );
-	helicopterSound.play();
+    helicopterSound.autoPlay = false;
 });
 
 // create an object for the sound to play from
@@ -163,20 +167,20 @@ const geometryC = new THREE.SphereGeometry( 1, 32, 16 );
 
 const sphereLookAt = new THREE.Mesh( geometryC, new THREE.MeshBasicMaterial( {color: 0xff0000} ) );
 sphereLookAt.position.set(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
-scene.add(sphereLookAt);
+//scene.add(sphereLookAt);
 
 const sphereA = new THREE.Mesh( geometryC, new THREE.MeshBasicMaterial( {color: 0x00ff00} ) );
 sphereA.position.set(rotYPointA.x,rotYPointA.y,rotYPointA.z);
-scene.add(sphereA);
+//scene.add(sphereA);
 
 const sphereB = new THREE.Mesh( geometryC, new THREE.MeshBasicMaterial( {color: 0x0000ff} ) );
 sphereB.position.set(rotYPointB.x,rotYPointB.y,rotYPointB.z);
-scene.add(sphereB);
+//scene.add(sphereB);
 
 
 const sphereC = new THREE.Mesh( geometryC, new THREE.MeshBasicMaterial( {color: 0xffffff} ) );
 sphereC.position.set(0,0,0);
-scene.add(sphereC);
+//scene.add(sphereC);
 
 function animate() {
     updateRotYaxis();
@@ -223,25 +227,25 @@ function keyController(){
             // First Quadrant
             cameraRotAngleXZ = Math.atan((camera.position.z-cameraLookAt.z)/(camera.position.x-cameraLookAt.x));
             //document.title = "1er Cuadrante";
-            console.log("ATAN: ",cameraRotAngleXZ);
+            //console.log("ATAN: ",cameraRotAngleXZ);
 
         } else if (camera.position.x <= cameraLookAt.x && camera.position.z > cameraLookAt.z){
             // Second Quadrant
             cameraRotAngleXZ = -Math.atan((camera.position.x-cameraLookAt.x)/(camera.position.z-cameraLookAt.z))+Math.PI/2;
             //document.title = "2do Cuadrante";
-            console.log("ATAN: ",cameraRotAngleXZ);
+            //console.log("ATAN: ",cameraRotAngleXZ);
 
         } else if (camera.position.x < cameraLookAt.x && camera.position.z <= cameraLookAt.z){
             // Third Quadrant
             cameraRotAngleXZ = -(Math.atan((camera.position.x-cameraLookAt.x)/(camera.position.z-cameraLookAt.z))+Math.PI/2);
             //document.title = "3er Cuadrante";
-            console.log("ATAN: ",cameraRotAngleXZ);
+            //console.log("ATAN: ",cameraRotAngleXZ);
 
         } else if (camera.position.x > cameraLookAt.x && camera.position.z <= cameraLookAt.z){
             // Fourth Quadrant
             cameraRotAngleXZ = Math.atan((camera.position.z-cameraLookAt.z)/(camera.position.x-cameraLookAt.x));
             //document.title = "4to Cuadrante";
-            console.log("ATAN: ",cameraRotAngleXZ);
+            //console.log("ATAN: ",cameraRotAngleXZ);
 
         }/* else if (camera.position.x == 0 && camera.position.z > 0){ // AXIS
             cameraRotAngleXZ = Math.PI/2;
@@ -266,14 +270,14 @@ function keyController(){
                     cameraMode = 0;
                     //camera.position.set(cameraInitialPos.x,cameraInitialPos.y,cameraInitialPos.z);
                     //cameraRotAngleXZ = Math.asin((camera.position.z-cameraLookAt.z)/distCenter);//camera.position.x-cameraLookAt.x
-                    console.log("MATH FUNCTION:: ",cameraRotAngleXZ);
+                    //console.log("MATH FUNCTION:: ",cameraRotAngleXZ);
                 }
                 
                 cameraRotAngleXZ+=rotSpeed;
                 camera.position.x = cameraLookAt.x + distCenter * Math.cos( cameraRotAngleXZ );         
                 camera.position.z = cameraLookAt.z + distCenter * Math.sin( cameraRotAngleXZ );
                 camera.lookAt(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
-                console.log(cameraRotAngleXZ);
+                //console.log(cameraRotAngleXZ);
 
                 updateRotYaxis();
                 break;
@@ -430,6 +434,20 @@ function keyController(){
                 break;
             case "KeyC":
                 console.log(camera.position);
+            case "KeyO":
+                devMode = !devMode;
+                if(devMode){
+                    scene.add(sphereLookAt);
+                    scene.add(sphereA);
+                    scene.add(sphereB);
+                    scene.add(sphereC);
+                }else{
+                    scene.remove(sphereLookAt);
+                    scene.remove(sphereA);
+                    scene.remove(sphereB);
+                    scene.remove(sphereC);
+                }
+                break;
         }
     }
 }
@@ -513,8 +531,8 @@ function buildScene(){
 
     const fenceHeight = 5;
 
-    const fence1 = Fence(300,fenceHeight);
-    fence1.position.set(0,0.5,84.5);
+    const fence1 = Fence(312,fenceHeight);
+    fence1.position.set(3.5,0.5,84.5);
     scene.add(fence1);
 
     const fence2 = Fence(165,fenceHeight);
@@ -526,21 +544,37 @@ function buildScene(){
     fence3.rotation.y=Math.PI/2;
     scene.add(fence3);
 
-    const fence4 = Fence(80,fenceHeight);
-    fence4.position.set(120,0.5,10);
+    const fence4 = Fence(106.5,fenceHeight);
+    fence4.position.set(129.2,0.5,20);
     fence4.rotation.y=-Math.PI/3.99;
     scene.add(fence4);
 
+    const fence5 = Fence(30,fenceHeight);
+    fence5.position.set(163,0.5,70);
+    fence5.rotation.y=Math.PI/2.4;
+    scene.add(fence5);
+
     const lightpoleY = 3;
     const lightpolePositionsRotations = [
+        //Z+
         [new THREE.Vector3(-100,lightpoleY,60), new THREE.Vector3(0,0,0)],
         [new THREE.Vector3(-50,lightpoleY,60), new THREE.Vector3(0,0,0)],
+        [new THREE.Vector3(0,lightpoleY,60), new THREE.Vector3(0,0,0)],
         [new THREE.Vector3(50,lightpoleY,60), new THREE.Vector3(0,0,0)],
         [new THREE.Vector3(100,lightpoleY,60), new THREE.Vector3(0,0,0)],
-        [new THREE.Vector3(0,lightpoleY,60), new THREE.Vector3(0,0,0)],
-        [new THREE.Vector3(0,lightpoleY,-96), new THREE.Vector3(0,Math.PI,0)],
+        [new THREE.Vector3(162,lightpoleY,65), new THREE.Vector3(0,-Math.PI/1.8,0)],
+
+        //X+
+        [new THREE.Vector3(0,lightpoleY,-96), new THREE.Vector3(0,Math.PI/2.1,0)],
+        [new THREE.Vector3(-22,lightpoleY,-27), new THREE.Vector3(0,Math.PI/1.75,0)],
+        [new THREE.Vector3(46,lightpoleY,0), new THREE.Vector3(0,Math.PI,0)],
+        [new THREE.Vector3(100,lightpoleY,21), new THREE.Vector3(0,Math.PI/1.34,0)],
+
+        //Z-
         [new THREE.Vector3(-50,lightpoleY,-96), new THREE.Vector3(0,Math.PI,0)],
         [new THREE.Vector3(-100,lightpoleY,-96), new THREE.Vector3(0,Math.PI,0)],
+
+        //X-
         [new THREE.Vector3(-125,lightpoleY,-60), new THREE.Vector3(0,-Math.PI/2,0)],
         [new THREE.Vector3(-125,lightpoleY,-10), new THREE.Vector3(0,-Math.PI/2,0)],
         [new THREE.Vector3(-125,lightpoleY,40), new THREE.Vector3(0,-Math.PI/2,0)]
@@ -558,6 +592,35 @@ function buildScene(){
     pits.rotation.y=Math.PI/2;
     scene.add(pits);
 
+
+    const bannerY = 1.5/1.2;
+    const bannerPositionsRotations = [
+        //Z+
+        [new THREE.Vector3(-100,bannerY,61), new THREE.Vector3(0,0,0), 0],
+        [new THREE.Vector3(-50,bannerY,61), new THREE.Vector3(0,0,0), 1],
+        [new THREE.Vector3(0,bannerY,61), new THREE.Vector3(0,0,0), 2],
+        [new THREE.Vector3(50,bannerY,61), new THREE.Vector3(0,0,0), 0],
+        [new THREE.Vector3(100,bannerY,61), new THREE.Vector3(0,0,0), 1],
+        [new THREE.Vector3(161,bannerY,65), new THREE.Vector3(0,-Math.PI/1.8,0), 2],
+
+        //X+
+        [new THREE.Vector3(1,bannerY,-96), new THREE.Vector3(0,Math.PI/2.1,0), 0],
+        [new THREE.Vector3(-21,bannerY,-27), new THREE.Vector3(0,Math.PI/1.75,0), 2],
+        [new THREE.Vector3(46,bannerY,-1), new THREE.Vector3(0,Math.PI,0), 1],
+        [new THREE.Vector3(101,bannerY,21), new THREE.Vector3(0,Math.PI/1.34,0), 0],
+
+        //Z-
+        [new THREE.Vector3(-50,bannerY,-97), new THREE.Vector3(0,Math.PI,0), 1],
+        [new THREE.Vector3(-100,bannerY,-97), new THREE.Vector3(0,Math.PI,0), 2],
+
+        //X-
+        [new THREE.Vector3(-126,bannerY,-60), new THREE.Vector3(0,-Math.PI/2,0), 0],
+        [new THREE.Vector3(-126,bannerY,-10), new THREE.Vector3(0,-Math.PI/2,0), 1],
+        [new THREE.Vector3(-126,bannerY,40), new THREE.Vector3(0,-Math.PI/2,0), 2]
+    ];
+
+    setBanners(bannerPositionsRotations);
+
     
 }
 
@@ -569,6 +632,17 @@ function setLightpoles(posRotArray){
         lightpole.position.set(pos.x,pos.y,pos.z);
         lightpole.rotation.set(rot.x,rot.y,rot.z);
         scene.add(lightpole);
+    }
+}
+
+function setBanners(posRotArray){
+    for (let i=0; i<posRotArray.length; i++){
+        const pos = posRotArray[i][0];
+        const rot = posRotArray[i][1];
+        const banner = Banner(posRotArray[i][2]);
+        banner.position.set(pos.x,pos.y,pos.z);
+        banner.rotation.set(rot.x,rot.y,rot.z);
+        scene.add(banner);
     }
 }
 
