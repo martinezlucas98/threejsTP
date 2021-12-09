@@ -4,7 +4,7 @@ A car race track designed with ThreeJS.
 
 ## Controls 🎮 🎮
 
-There are two camera modes. To change between them just press a key that belongs to the desired mode, for example to activate the free camera mode press the A key, and to activate the locekd rotation mode press the Up key. More information about the keys below.
+There are two camera modes. To change between them just press a key that belongs to the desired mode (clicking with the mouse will NOT change the camera mode from locked to free!!), for example to activate the free camera mode press the A key, and to activate the locked rotation mode press the Up key. More information about the keys below.
 
 ### Free camera mode 👻
 
