@@ -462,6 +462,8 @@ function buildScene(){
         new THREE.Vector3(80,0,80),
     ];
 
+    addSun();
+
     const carsY = 1;
     const carsDist = 8;
     const carRows = 6;
@@ -644,6 +646,15 @@ function setBanners(posRotArray){
         banner.rotation.set(rot.x,rot.y,rot.z);
         scene.add(banner);
     }
+}
+
+function addSun(){
+    const sun = new THREE.Mesh( 
+        new THREE.SphereGeometry( 10, 32, 32),
+        new THREE.MeshBasicMaterial( { color: 0xffffff } )
+    );
+    sun.position.set(50,1000,0);
+    scene.add(sun);
 }
 
 function setTrackBorders(){
