@@ -152,6 +152,7 @@ function light(pos,target){
 }
 
 /*
+// Future update!!!! ::
 function personWithFlag(){
     const group = new THREE.Group();
 

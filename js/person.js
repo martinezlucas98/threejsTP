@@ -17,7 +17,7 @@ export function Person(){
     person.add(head);
 
     const body = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.3,0.1,0.7,3),//bodyGeometry(),
+        new THREE.CylinderGeometry(0.3,0.1,0.7,3),
         new THREE.MeshLambertMaterial( { color: shirtColor } )
     );
     body.position.y=-0.5
@@ -27,13 +27,4 @@ export function Person(){
     person.position.y = 0.28;
 
     return person;
-}
-
-function bodyGeometry(){
-    const points = [];
-    for ( let i = 0; i < 14; i ++ ) {
-        points.push( new THREE.Vector2( (Math.sin( i * 0.14 ) * 5 + 5)/50, ( i - 5 ) * 2 /50) );
-    }
-    const geometry = new THREE.LatheGeometry( points,4 );
-    return geometry;
 }

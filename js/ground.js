@@ -1,24 +1,6 @@
 import * as THREE from 'https://cdn.skypack.dev/three@0.134.0';
 import { Track, TrackFuncional } from "./track.js";
 
-export function GroundOld(x,z){
-    const ground = new THREE.Group();
-
-    // Grass
-    const grassTexture = new THREE.TextureLoader().load("../textures/grass08.png");
-    grassTexture.wrapS = THREE.RepeatWrapping;
-    grassTexture.wrapT = THREE.RepeatWrapping;
-    grassTexture.repeat.set(100,100);
-    const grass = new THREE.Mesh(
-        new THREE.BoxBufferGeometry(x,5,z),
-        new THREE.MeshLambertMaterial({map: grassTexture})//({color: 0x409b06})
-    );
-    ground.add(grass);
-    grass.position.y=-0.7;
-
-    return ground;
-}
-
 export function GroundFuncional(x,z){
     const ground = new THREE.Group();
 

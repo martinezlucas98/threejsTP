@@ -1,5 +1,5 @@
 import { ellipseRing } from "./utils.js";
-
+// UNUSED !!!
 export function Stadium(fieldX,fieldY,seatRows){
     const stadium = new THREE.Group();
 

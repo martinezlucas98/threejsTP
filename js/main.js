@@ -1,10 +1,7 @@
 import * as THREE from 'https://cdn.skypack.dev/three@0.134.0';
 import { Car } from "./car.js";
-import { Person } from "./person.js";
-//import { Stadium } from "./stadium.js";
 import { Seats, SeatsVIP } from "./seats.js";
 import { Lightpole } from "./lightpole.js";
-//import { Track } from "./track.js";
 import { Ground } from "./ground.js";
 import { StartLine } from './startLine.js';
 import { Fence } from './fence.js';
@@ -13,7 +10,7 @@ import { Helicopter } from './helicopter.js';
 import { PitsStop } from './pitsStop.js';
 import { Banner } from './banner.js';
 
-import {OrbitControls} from "https://cdn.skypack.dev/three@0.134.0/examples/jsm/controls/OrbitControls.js";
+//import {OrbitControls} from "https://cdn.skypack.dev/three@0.134.0/examples/jsm/controls/OrbitControls.js";
 import MoveControls from './MoveControls.js';
 
 
@@ -184,7 +181,7 @@ sphereC.position.set(0,0,0);
 
 function animate() {
     updateRotYaxis();
-    //sphereA.position.set(rotYPointA.x,rotYPointA.y,rotYPointA.z);
+    sphereA.position.set(rotYPointA.x,rotYPointA.y,rotYPointA.z);
     sphereB.position.set(rotYPointB.x,rotYPointB.y,rotYPointB.z);
 
 	requestAnimationFrame( animate );
@@ -211,7 +208,6 @@ THREE.DefaultLoadingManager.onProgress = function ( item, loaded, total ) {
     if ( loaded === total ) renderer.render(scene,camera);;
 
 };
-//renderer.render(scene,camera);
 
 document.body.appendChild(renderer.domElement);
 
@@ -219,46 +215,24 @@ document.body.appendChild(renderer.domElement);
 function keyController(){
     const rotSpeed = 0.5*0.1;
     if(cameraMode==1){
-        //cameraRotAngleXZ = Math.atan(camera.position.z/camera.position.x);
-        //cameraRotAngleYZ = Math.atan(camera.position.y/camera.position.z);
         distCenter = Math.sqrt((camera.position.x-cameraLookAt.x)**2 + (camera.position.z-cameraLookAt.z)**2);
 
         if (camera.position.x >= cameraLookAt.x && camera.position.z > cameraLookAt.z){
             // First Quadrant
             cameraRotAngleXZ = Math.atan((camera.position.z-cameraLookAt.z)/(camera.position.x-cameraLookAt.x));
-            //document.title = "1er Cuadrante";
-            //console.log("ATAN: ",cameraRotAngleXZ);
 
         } else if (camera.position.x <= cameraLookAt.x && camera.position.z > cameraLookAt.z){
             // Second Quadrant
             cameraRotAngleXZ = -Math.atan((camera.position.x-cameraLookAt.x)/(camera.position.z-cameraLookAt.z))+Math.PI/2;
-            //document.title = "2do Cuadrante";
-            //console.log("ATAN: ",cameraRotAngleXZ);
 
         } else if (camera.position.x < cameraLookAt.x && camera.position.z <= cameraLookAt.z){
             // Third Quadrant
             cameraRotAngleXZ = -(Math.atan((camera.position.x-cameraLookAt.x)/(camera.position.z-cameraLookAt.z))+Math.PI/2);
-            //document.title = "3er Cuadrante";
-            //console.log("ATAN: ",cameraRotAngleXZ);
 
         } else if (camera.position.x > cameraLookAt.x && camera.position.z <= cameraLookAt.z){
             // Fourth Quadrant
             cameraRotAngleXZ = Math.atan((camera.position.z-cameraLookAt.z)/(camera.position.x-cameraLookAt.x));
-            //document.title = "4to Cuadrante";
-            //console.log("ATAN: ",cameraRotAngleXZ);
-
-        }/* else if (camera.position.x == 0 && camera.position.z > 0){ // AXIS
-            cameraRotAngleXZ = Math.PI/2;
-        } else if (camera.position.x == 0 && camera.position.z < 0){
-            cameraRotAngleXZ = -Math.PI/2;
-        } else if (camera.position.x > 0 && camera.position.z == 0){
-            cameraRotAngleXZ = 0;
-        } else if (camera.position.x < 0 && camera.position.z == 0){
-            cameraRotAngleXZ = Math.PI;
-        } else {
-            // Backup plan
-            cameraRotAngleXZ = Math.atan((camera.position.z-cameraLookAt.z)/(camera.position.x-cameraLookAt.x));
-        }*/
+        }
     }
     
     document.onkeydown = function(event){
@@ -277,7 +251,6 @@ function keyController(){
                 camera.position.x = cameraLookAt.x + distCenter * Math.cos( cameraRotAngleXZ );         
                 camera.position.z = cameraLookAt.z + distCenter * Math.sin( cameraRotAngleXZ );
                 camera.lookAt(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
-                //console.log(cameraRotAngleXZ);
 
                 updateRotYaxis();
                 break;
@@ -307,17 +280,6 @@ function keyController(){
                     
                     cameraRotAngleYZ+=rotSpeed/variantSpeed;
                     variantSpeed+=5;
-
-                    //camera.position.x-=rotYPointA.x;
-                    //camera.position.y-=rotYPointA.y;
-                    //camera.position.z-=rotYPointA.z;
-
-                    //camera.rotateOnWorldAxis(getAxis(rotYPointA,rotYPointB),cameraRotAngleYZ);
-
-                    //camera.position.x+=rotYPointA.x;
-                    //camera.position.y+=rotYPointA.y;
-                    //camera.position.z+=rotYPointA.z;
-                
                     
                     camera.rotateAroundWorldAxis(cameraLookAt, getAxis(rotYPointA,rotYPointB),cameraRotAngleYZ);
                 }
@@ -334,80 +296,12 @@ function keyController(){
                 if(camera.position.y>1.9){
                     cameraRotAngleYZ-=rotSpeed/variantSpeed;
                     variantSpeed+=5;
-
-                    //camera.position.x-=rotYPointA.x;
-                    //camera.position.y-=rotYPointA.y;
-                    //camera.position.z-=rotYPointA.z;
-
-                    //camera.rotateOnWorldAxis(getAxis(rotYPointA,rotYPointB),cameraRotAngleYZ);
-
-                    //camera.position.x+=rotYPointA.x;
-                    //camera.position.y+=rotYPointA.y;
-                    //camera.position.z+=rotYPointA.z;
                     
                     camera.rotateAroundWorldAxis(cameraLookAt, getAxis(rotYPointB,rotYPointA),cameraRotAngleYZ);
                 }
 
                 break;
-            /*case "ArrowUp":
-                if (cameraRotAngleYZ>=2*Math.PI){
-                    cameraRotAngleYZ = 0;
-                }
-                document.title = ""+cameraRotAngleYZ;
-                controls.enabled = false;
-                cameraMode = 0;
-                cameraRotAngleYZ+=rotSpeed;
-                //if (cameraRotAngleYZ>=0){
-                    //cameraRotAngleYZ=0;
-               // }
-                
-                newPosY = camera.worldToLocal(cameraLookAt.y + distCenter * Math.cos( cameraRotAngleYZ ));    
-                newPosZ = camera.worldToLocal(cameraLookAt.z + distCenter * Math.sin( cameraRotAngleYZ ));
-                currentPosY = camera.worldToLocal(camera.position.y);
-                currentPosZ= camera.worldToLocal(camera.position.z);
-                console.log(newPosY);
-                console.log(newPosZ);
-                console.log(currentPosY);
-                console.log(currentPosZ);
-                if (camera.position.x>0 && camera.position.z>0){
-                    // First Quadrant
-                    camera.translateY(newPosY-currentPosY);
-                    camera.translateZ(currentPosZ-newPosZ);
-                } else if (camera.position.x<0 && camera.position.z>0){
-                    // Second Quadrant
-                    camera.translateY(currentPosY-newPosY);
-                    camera.translateZ(currentPosZ-newPosZ);
-                } else if (camera.position.x<0 && camera.position.z<0){
-                    // Third Quadrant
-                    camera.translateY(currentPosY-newPosY);
-                    camera.translateZ(newPosZ-currentPosZ);
-                } else if (camera.position.x>0 && camera.position.z<0){
-                    // Fourth Quadrant
-                    camera.translateY(newPosY-currentPosY);
-                    camera.translateZ(newPosZ-currentPosZ);
-                }
-                
-                if (cameraRotAngleYZ>0 && cameraRotAngleYZ<Math.PI/2){
-                    //camera.up.set(0,-1,0);
-                }else{
-                    //camera.up.set(0,1,0);
-                }
-                camera.lookAt(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
-                break;
-            case "ArrowDown":
-                controls.enabled = false;
-                cameraMode = 0;
-                cameraRotAngleYZ-=rotSpeed;
-                //if (cameraRotAngleYZ<=-Math.PI/2){
-                   // cameraRotAngleYZ=-Math.PI/2;
-                //}
-                
-                camera.position.y = cameraLookAt.y + distCenter * Math.cos( cameraRotAngleYZ );    
-                camera.position.z = cameraLookAt.z + distCenter * Math.sin( cameraRotAngleYZ );
-                //camera.translateY(newPosY-camera.position.y);
-                //camera.translateZ(newPosZ-camera.position.z);
-                //camera.lookAt(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
-                break;*/
+            
             case "KeyW":
             case "KeyA":
             case "KeyS":
@@ -420,6 +314,7 @@ function keyController(){
                     cameraMode = 1;
                 }
                 break;
+
             case "KeyP":
                 if(crowdSound.isPlaying){
                     crowdSound.pause();
@@ -430,7 +325,6 @@ function keyController(){
                     engineSound.play();
                     helicopterSound.play();
                 }
-                //console.log("Angle: "+cameraRotAngleXZ + " // Position (X,Y,Z): "+camera.position.x+" , "+camera.position.x+" , "+camera.position.z+" // DistCenter: "+distCenter);
                 break;
             case "KeyC":
                 console.log(camera.position);
@@ -455,13 +349,6 @@ function keyController(){
 
 function buildScene(){
 
-    const lightsPos = [
-        new THREE.Vector3(30,0,30),
-        new THREE.Vector3(40,0,40),
-        new THREE.Vector3(20,0,20),
-        new THREE.Vector3(80,0,80),
-    ];
-
     addSun();
 
     const carsY = 1;
@@ -484,13 +371,6 @@ function buildScene(){
         }
     }
     
-
-
-    //const track = Track();
-    //track.position.z=80;
-    //track.position.y=-1.5;
-    //track.position.x = 20;
-    //scene.add(track);
 
     const ground = Ground(455,450,10);
     ground.position.y=0;
@@ -584,7 +464,6 @@ function buildScene(){
 
     setLightpoles(lightpolePositionsRotations);
     
-    //setArtificialLights(lightsPos);
 
     setTrackBorders();
 

@@ -1,53 +1,6 @@
 import * as THREE from 'https://cdn.skypack.dev/three@0.134.0';
 const lampColor = 0x4f555f;
 
-export function LightpoleOld(){
-    const lightpole = new THREE.Group();
-
-    const mainPol = new THREE.Mesh(
-        new THREE.CylinderGeometry( 0.05, 0.05, 5, 32 ),
-        new THREE.MeshToonMaterial({color: lampColor})
-    );
-    lightpole.position.y=2.5;
-    lightpole.add(mainPol);
-
-    const supportPole = new THREE.Mesh(
-        new THREE.CylinderGeometry( 0.05, 0.05, 2, 32 ),
-        new THREE.MeshToonMaterial({color: lampColor})
-    );
-    supportPole.position.y = 2.3;
-    supportPole.rotation.x = Math.PI/2;
-    supportPole.rotation.z = Math.PI/2;
-    lightpole.add(supportPole);
-
-    const lantern1 = Lantern(0.3,0.4,0.1);
-    lantern1.position.y=supportPole.position.y;
-    lantern1.position.x = -1;
-    lantern1.rotation.x=Math.PI/8;
-    lightpole.add(lantern1);
-
-    const lantern2 = Lantern(0.3,0.4,0.1);
-    lantern2.position.y=supportPole.position.y;
-    lantern2.position.x = -0.35;
-    lantern2.rotation.x=lantern1.rotation.x
-    lightpole.add(lantern2);
-
-    const lantern3 = Lantern(0.3,0.4,0.1);
-    lantern3.position.y=supportPole.position.y;
-    lantern3.position.x = 0.35;
-    lantern3.rotation.x=lantern1.rotation.x
-    lightpole.add(lantern3);
-
-    const lantern4 = Lantern(0.3,0.4,0.1);
-    lantern4.position.y=supportPole.position.y;
-    lantern4.position.x = 1;
-    lantern4.rotation.x=lantern1.rotation.x
-    lightpole.add(lantern4);
-    
-
-    return lightpole;
-}
-
 export function Lightpole(){
     const lightpole = new THREE.Group();
 
@@ -185,17 +138,6 @@ function light(pos){
 
     l.add(light.target);
     l.add(light);
-    
-    //const helper = new THREE.SpotLightHelper(light);
-    //helper.update();
-    //l.add(helper);
-    //helper.update();
-
-    //const lightShine = new THREE.PointLight(0xffffff,2,0.5);
-    //lightShine.position.set(pos.x,pos.y,pos.z+0.1);
-    //const helper2 = new THREE.PointLightHelper(lightShine);
-    //l.add(lightShine);
-    //l.add(helper2);
 
 
     return l;
