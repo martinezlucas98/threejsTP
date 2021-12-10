@@ -36,7 +36,6 @@ The **Left** key makes the camera rotate horizontally (to the left) around point
 
 The **Right** key makes the camera rotate horizontally (to the right) around point P.
 
-
 ## Extra (cool) features 🔥 🔥
 
 ### Sound 🔉
@@ -44,6 +43,18 @@ The **Right** key makes the camera rotate horizontally (to the right) around poi
 Press the **O** key to toggle the sound.
 
 > Note: the sound from the helicopter and cars are positional... get closer to hear them louder!!
+
+## Mouse sensitivity 🐁️
+
+You can increase or decrease the mouse sensitivity for looking around on free camera mode.
+
+Press the **Comma** key (**,**) to decrease the mouse sensitivity by one.
+
+Press the **Period** key (**.**) to increase the mouse sensitivity by one.
+
+The default value for the mouse sensitivity is 1.
+
+The minimum value is 1.
 
 ### Dev mode 💻
 

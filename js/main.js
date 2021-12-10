@@ -342,6 +342,14 @@ function keyController(){
                     scene.remove(sphereC);
                 }
                 break;
+            case "Comma":
+                if(controls.mouseSensitivity>1){
+                    controls.mouseSensitivity--;
+                }
+                break;
+            case "Period":
+                controls.mouseSensitivity++;
+                break;
         }
     }
 }

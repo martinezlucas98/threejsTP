@@ -35,6 +35,7 @@ import * as THREE from 'https://cdn.skypack.dev/three@0.134.0';
 			this.verticalMin = 0;
 			this.verticalMax = Math.PI;
 			this.mouseDragOn = false; // internals
+			this.mouseSensitivity = 1;
 
 			this.limitMovement = false;
 			this.limits = {
@@ -136,13 +137,13 @@ import * as THREE from 'https://cdn.skypack.dev/three@0.134.0';
                 if (this.mouseDragOn){
                     if ( this.domElement === document ) {
 
-                        this.mouseX = event.pageX - this.viewHalfX;
-                        this.mouseY = event.pageY - this.viewHalfY;
+                        this.mouseX = (event.pageX - this.viewHalfX)*this.mouseSensitivity;
+                        this.mouseY = (event.pageY - this.viewHalfY)*1.5*this.mouseSensitivity;
     
                     } else {
     
-                        this.mouseX = event.pageX - this.domElement.offsetLeft - this.viewHalfX;
-                        this.mouseY = event.pageY - this.domElement.offsetTop - this.viewHalfY;
+                        this.mouseX = (event.pageX - this.domElement.offsetLeft - this.viewHalfX)*this.mouseSensitivity;
+                        this.mouseY = (event.pageY - this.domElement.offsetTop - this.viewHalfY)*1.5*this.mouseSensitivity;
     
                     }
                 }

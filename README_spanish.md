@@ -36,7 +36,6 @@ La tecla **Izquierda** hace que la cámara gire horizontalmente (hacia la izquie
 
 La tecla **Derecha** hace que la cámara gire horizontalmente (hacia la derecha) alrededor del punto P.
 
-
 ## Funciones (cool) adicionales 🔥 🔥
 
 ### Sonido 🔉
@@ -44,6 +43,18 @@ La tecla **Derecha** hace que la cámara gire horizontalmente (hacia la derecha)
 Presione la tecla **O** para alternar el sonido de apagado a encendido y viceversa.
 
 > Nota: los sonidos del helicóptero y de los coches son posicionales ... ¡acércate para escucharlos más fuerte!
+
+## Sensibilidad del ratón 🐁️
+
+Puede aumentar o disminuir la sensibilidad del mouse para mirar alrededor en el modo de cámara libre.
+
+Presione la tecla **Coma** (**,**) para disminuir la sensibilidad del mouse en uno.
+
+Presione la tecla **Punto** (**.**) para aumentar la sensibilidad del mouse en uno.
+
+El valor predeterminado para la sensibilidad del mouse es 1.
+
+El valor mínimo es 1.
 
 ### Modo desarrollador 💻
 
