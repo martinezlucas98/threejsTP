@@ -36,11 +36,15 @@ La tecla **Izquierda** hace que la cámara gire horizontalmente (hacia la izquie
 
 La tecla **Derecha** hace que la cámara gire horizontalmente (hacia la derecha) alrededor del punto P.
 
+La tecla **Más** (**+**) hace que la cámara se acerque al punto P.
+
+La tecla **Menos** (**-**) hace que la cámara se aleje del punto P.
+
 ## Funciones (cool) adicionales 🔥 🔥
 
 ### Sonido 🔉
 
-Presione la tecla **O** para alternar el sonido de apagado a encendido y viceversa.
+Presione la tecla **P** para alternar el sonido de apagado a encendido y viceversa.
 
 > Nota: los sonidos del helicóptero y de los coches son posicionales ... ¡acércate para escucharlos más fuerte!
 
@@ -58,7 +62,7 @@ El valor mínimo es 1.
 
 ### Modo desarrollador 💻
 
-Presione la tecla **P** para alternar el modo de desarrollo de desactivado a activado y viceversa. Esto mostrará algunas esferas en la pantalla, utilizadas con fines de desarrollo.
+Presione la tecla **O** para alternar el modo de desarrollo de desactivado a activado y viceversa. Esto mostrará algunas esferas en la pantalla, utilizadas con fines de desarrollo.
 
 La esfera verde representa el punto fijo P para el modo de rotación bloqueada.
 

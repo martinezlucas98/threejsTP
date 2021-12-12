@@ -36,11 +36,15 @@ The **Left** key makes the camera rotate horizontally (to the left) around point
 
 The **Right** key makes the camera rotate horizontally (to the right) around point P.
 
+The **Plus** key (**+**) makes the camera move closer to the point P.
+
+The **Minus** key (**-**) makes the camera move away from the point P.
+
 ## Extra (cool) features 🔥 🔥
 
 ### Sound 🔉
 
-Press the **O** key to toggle the sound.
+Press the **P** key to toggle the sound.
 
 > Note: the sound from the helicopter and cars are positional... get closer to hear them louder!!
 
@@ -58,7 +62,7 @@ The minimum value is 1.
 
 ### Dev mode 💻
 
-Press the **P** key to toggle the dev mode. This will display some spheres on the screen, used for dev purposes.
+Press the **O** key to toggle the dev mode. This will display some spheres on the screen, used for dev purposes.
 
 The green sphere represents the fixed point P for the locked rotation mode.
 
