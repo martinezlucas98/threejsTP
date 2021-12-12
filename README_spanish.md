@@ -72,4 +72,4 @@ También hay una esfera roja, que representa el punto de "mirada" (look at) de l
 
 Si ocurre un error o bug, actualice la página web y verifique si aún ocurre.
 
-> Por ejemplo, en solo una de nuestras muchas (cientos) pruebas, mientras se rotaba, las teclas arriba y abajo estaban invertidas; Esto ocasionó que se superen los límites verticales puestos para la rotación, generando comportamientos extraños. Actualizar la página web lo solucionó.
+> Por ejemplo, en solo una de nuestras muchas (cientos) pruebas, mientras se rotaba, las teclas arriba y abajo estaban invertidas; Esto ocasionó que se superen los límites verticales puestos para la rotación, generando comportamientos extraños. Actualizar la página web lo solucionó. (**¡Este error ya ha sido arreglado!**🤩️).

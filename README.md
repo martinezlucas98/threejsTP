@@ -72,4 +72,4 @@ There is also a red sphere, which represents the camera's "look at" point during
 
 If a bug occurs please refresh the web page and check if it still occurs.
 
-> For example, in just one of our many (hundreds) tests, while rotating, the up and down keys were inverted; This caused the vertical limits set for rotation to be exceeded, generating strange behaviors. Refreshing the web page solved it.
+> For example, in just one of our many (hundreds) tests, while rotating, the up and down keys were inverted; This caused the vertical limits set for rotation to be exceeded, generating strange behaviors. Refreshing the web page solved it. (**This bug has already been fixed!!**🤩️)
