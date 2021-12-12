@@ -211,13 +211,12 @@ THREE.DefaultLoadingManager.onProgress = function ( item, loaded, total ) {
 
 document.body.appendChild(renderer.domElement);
 
-
+var lastCameraPositionY = -999999;
 function keyController(){
-    let quad;
     let verticalAngleAux=0;
     const rotSpeed = 0.5*0.1;
+    distCenter = Math.sqrt((camera.position.x-cameraLookAt.x)**2 + (camera.position.z-cameraLookAt.z)**2);
     if(cameraMode==1){
-        distCenter = Math.sqrt((camera.position.x-cameraLookAt.x)**2 + (camera.position.z-cameraLookAt.z)**2);
 
         if (camera.position.x >= cameraLookAt.x && camera.position.z > cameraLookAt.z){
             // First Quadrant
@@ -235,20 +234,6 @@ function keyController(){
             // Fourth Quadrant
             cameraRotAngleXZ = Math.atan((camera.position.z-cameraLookAt.z)/(camera.position.x-cameraLookAt.x));
         }
-    }
-
-    if (camera.position.x >= cameraLookAt.x && camera.position.z > cameraLookAt.z){
-        // First Quadrant
-        quad=1;
-    } else if (camera.position.x <= cameraLookAt.x && camera.position.z > cameraLookAt.z){
-        // Second Quadrant
-        quad=2;
-    } else if (camera.position.x < cameraLookAt.x && camera.position.z <= cameraLookAt.z){
-        // Third Quadrant
-        quad=3;
-    } else if (camera.position.x > cameraLookAt.x && camera.position.z <= cameraLookAt.z){
-        // Fourth Quadrant
-        quad=4;
     }
 
     if (camera.position.x>=0){
@@ -293,35 +278,30 @@ function keyController(){
 
                 break;
             case "ArrowUp":
-                document.title = ""+quad+"//"+verticalAngleAux;
-                if(canRotateVertical(quad,verticalAngleAux,"up")){//camera.position.y<distCenter){
-                    if (cameraMode == 1){
-                        controls.enabled = false;
-                        cameraMode = 0;
-                        updateRotYaxis();
-                        camera.lookAt(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
-                    }
-                    
-                    cameraRotAngleYZ+=rotSpeed/variantSpeed;
-                    variantSpeed+=5;
-                    
-                    camera.rotateAroundWorldAxis(cameraLookAt, getAxis(rotYPointA,rotYPointB),cameraRotAngleYZ);
-                }
-
-                break;
-            case "ArrowDown":
-                document.title = ""+quad+"//"+verticalAngleAux;
                 if (cameraMode == 1){
                     controls.enabled = false;
                     cameraMode = 0;
                     updateRotYaxis();
                     camera.lookAt(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
                 }
-                if(canRotateVertical(quad,verticalAngleAux,"down")){//camera.position.y>1.9){
-                    cameraRotAngleYZ+=rotSpeed/variantSpeed;
-                    variantSpeed+=5;
-                    
-                    camera.rotateAroundWorldAxis(cameraLookAt, getAxis(rotYPointB,rotYPointA),cameraRotAngleYZ);
+                console.log(camera.position.y,lastCameraPositionY);
+                if(camera.position.y >= lastCameraPositionY){
+                    lastCameraPositionY = camera.position.y;
+                    camera.rotateAroundWorldAxis(cameraLookAt, getAxis(rotYPointA,rotYPointB),rotSpeed);
+                }
+
+                break;
+            case "ArrowDown":
+                if (cameraMode == 1){
+                    controls.enabled = false;
+                    cameraMode = 0;
+                    updateRotYaxis();
+                    camera.lookAt(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
+                }
+                console.log(camera.position.y,lastCameraPositionY);
+                if(camera.position.y>0){
+                    lastCameraPositionY = -999999;
+                    camera.rotateAroundWorldAxis(cameraLookAt, getAxis(rotYPointA,rotYPointB),-rotSpeed);
                 }
 
                 break;
@@ -684,53 +664,6 @@ THREE.Object3D.prototype.rotateAroundWorldAxis = function() {
 
 }();
 
-
-/*
-if (camera.position.z >= cameraLookAt.z){
-            cameraRotAngleYZ = Math.atan((camera.position.z-cameraLookAt.z)/(camera.position.z-cameraLookAt.z));
-        }else{
-            cameraRotAngleYZ = Math.PI - Math.atan((camera.position.z-cameraLookAt.z)/(camera.position.z-cameraLookAt.z));
-        }
-*/
-
 function normalizeAngle(angle){
     return Math.atan2(Math.sin(angle),Math.cos(angle));
-}
-
-function canRotateVertical(quad,angle,dir){
-    let ret = false;
-    if (dir=="up"){
-        switch (quad){
-            case 1:
-                if (angle<1.90 || camera.position.y<0){ret=true;}
-                break;
-            case 2:
-                if (angle>1.90 || camera.position.y<0){ret=true;}
-                break;
-            case 3:
-                if (angle<-1.90 || camera.position.y<0){ret=true;}
-                break;
-            case 4:
-                if (angle>-1.6 || camera.position.y<0){ret=true;}
-                break;
-        }
-    }else{
-        switch (quad){
-            case 1:
-                if (angle>0.16 && camera.position.y>0){ret=true;}
-                break;
-            case 2:
-                if (angle<2.9 && camera.position.y>0){ret=true;}
-                break;
-            case 3:
-                if (angle>-2.9 && camera.position.y>0){ret=true;}
-                break;
-            case 4:
-                if (angle<-0.16 && camera.position.y>0){ret=true;}
-                break;
-        }
-    }
-
-    return ret;
-    
 }
