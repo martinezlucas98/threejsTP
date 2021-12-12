@@ -284,7 +284,7 @@ function keyController(){
                     updateRotYaxis();
                     camera.lookAt(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
                 }
-                console.log(camera.position.y,lastCameraPositionY);
+                //console.log(camera.position.y,lastCameraPositionY);
                 if(camera.position.y >= lastCameraPositionY){
                     lastCameraPositionY = camera.position.y;
                     camera.rotateAroundWorldAxis(cameraLookAt, getAxis(rotYPointA,rotYPointB),rotSpeed);
@@ -298,12 +298,18 @@ function keyController(){
                     updateRotYaxis();
                     camera.lookAt(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
                 }
-                console.log(camera.position.y,lastCameraPositionY);
+                //console.log(camera.position.y,lastCameraPositionY);
                 if(camera.position.y>0){
                     lastCameraPositionY = -999999;
                     camera.rotateAroundWorldAxis(cameraLookAt, getAxis(rotYPointA,rotYPointB),-rotSpeed);
                 }
 
+                break;
+            case "Minus":
+                cameraMode=0;
+                controls.enabled = false;
+                camera.lookAt(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
+                camera.translateZ(1);
                 break;
             
             case "KeyW":
@@ -354,6 +360,16 @@ function keyController(){
             case "Period":
                 controls.mouseSensitivity++;
                 break;
+            default:
+                if (event.key=='+'){
+                    cameraMode=0;
+                    controls.enabled = false;
+                    camera.lookAt(cameraLookAt.x,cameraLookAt.y,cameraLookAt.z);
+                    if(distCenter>2){
+                        camera.translateZ(-1);
+                    }
+                    break;
+                }
         }
     }
 }
