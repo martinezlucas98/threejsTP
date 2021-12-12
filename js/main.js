@@ -331,7 +331,7 @@ function keyController(){
             case "KeyS":
             case "KeyD":
             case "KeyR":
-            case "keyF":
+            case "KeyF":
                 if (cameraMode==0){
                     controls.enabled = true;
                     controls.lookAt(cameraLookAt);
